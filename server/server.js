@@ -7,7 +7,7 @@ let DB = process.env.DB;
 mongoose.connect(DB, {
     useNewUrlParser:true,
     useUnifiedTopology:true
-}).then(()=>{}).catch((err)=>{
+}).then(()=>{console.log("Mongo connected")}).catch((err)=>{
     console.error(err);
 });
 app.listen(port, ()=>{
