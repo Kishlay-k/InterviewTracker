@@ -1,16 +1,25 @@
-const { request } = require('express');
+const mongoose = require('mongoose')
 const express = require('express')
 const app = express()
-const port = 3000
+const problemSet = require('./models/problemSetModel')
+const authRouter = require('./routes/authenticationRoutes')
 app.use(express.json())
-app.get('/', (req, res) => {
-    res.status(200).send("<h2>Just getting started</h2>")
-})
-app.post('/', (req, res) => {
-    console.log(req.body)
-    res.send("Recieved a post request")
-})
+app.use('/', authRouter)
 
-app.listen(port, () => {
-    console.log('Hehe Welcome to port no. ' + port)
-})
+const insertData = async () => {
+    try {
+        const newSet = await problemSet.create({
+            "Title": "Helloooo",
+            "Link": "https://www.codeforces.com/",
+            "Solved": false,
+        })
+        console.log(newSet)
+    }
+    catch (err) {
+        console.log(err)
+    }
+}
+
+insertData()
+
+module.exports = app
