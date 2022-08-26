@@ -6,20 +6,5 @@ const authRouter = require('./routes/authenticationRoutes')
 app.use(express.json())
 app.use('/', authRouter)
 
-const insertData = async () => {
-    try {
-        const newSet = await problemSet.create({
-            "Title": "Helloooo",
-            "Link": "https://www.codeforces.com/",
-            "Solved": false,
-        })
-        console.log(newSet)
-    }
-    catch (err) {
-        console.log(err)
-    }
-}
-
-insertData()
 
 module.exports = app
