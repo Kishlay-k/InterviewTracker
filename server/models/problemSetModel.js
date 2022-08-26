@@ -10,7 +10,7 @@ const problemSetSchema = new mongoose.Schema({
     },
     Solved:{
         type: Boolean,
-        reuired: true
+        default: false
     }
 })
 const problemSet = mongoose.model('problemSet', problemSetSchema)
