@@ -34,6 +34,7 @@ const userSchema = new mongoose.Schema({
     },
     photo: String,
     passwordResetToken: String,
+    passwordChangedAt: String,
 })
 
 userSchema.pre('save', async function (next) {
@@ -45,6 +46,14 @@ userSchema.pre('save', async function (next) {
     next()
 })
 
+userSchema.pre('save', function (next) {
+    if (!this.isModified('password') || this.isNew) {
+        return next()
+    }
+    this.passwordChangedAt = Date.now() - 1000
+    next()
+})
+
 userSchema.methods.createPasswordResetToken = function () {
     const resetToken = crypto.randomBytes(32).toString('hex')
     this.passwordResetToken = crypto
@@ -53,6 +62,15 @@ userSchema.methods.createPasswordResetToken = function () {
         .digest('hex')
     return resetToken
 }
+
+userSchema.methods.passwordChanged = function (time) {
+    if (this.passwordChangedAt) {
+        const changedAt = parseInt(this.passwordChangedAt.getTime() / 1000, 10)
+        return changedAt > time
+    }
+    return false
+}
+
 
 const User = mongoose.model('user', userSchema)
 

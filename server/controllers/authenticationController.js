@@ -11,8 +11,8 @@ exports.signUp = (req, res) => {
 exports.createUser = async (req, res) => {
     try {
         const user = await User.create(req.body)
-        let token;
-        token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
+        let token
+        token = jwt.sign({ id: user._id }, process.env.JWT_SECRET)
         res.status(201).json({
             user: user,
             token
@@ -122,26 +122,63 @@ exports.resetPassword = async (req, res) => {
     }
 }
 exports.protect = async (req, res) => {
-    console.log(req.headers.authorization.startsWith('Bearer') === true);
-    console.log(!req.headers.authorization);
     if (!req.headers.authorization || !req.headers.authorization.startsWith('Bearer')) {
-        console.log('err');
+        console.log('err')
         res.status(400).json({
             message: "Please Login In"
-        });
+        })
     } else {
-        const token = req.headers.authorization.split(' ')[1];
+        const token = req.headers.authorization.split(' ')[1]
         try {
-            const decode = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
-            const user = await User.findById(decode.id);
-            console.log(user);
-            res.status(200).json({
-                message: "Hii"
-            });
+            const decode = await promisify(jwt.verify)(token, process.env.JWT_SECRET)
+            const user = await User.findById(decode.id)
+            console.log(user.passwordChanged(decode.iat))
+            if (user.passwordChanged(decode.iat)) {
+                throw new Error()
+            }
+            else {
+                req.user = user
+                next()
+            }
         } catch (err) {
             res.status(200).json({
                 message: "Invalid User"
-            });
+            })
         }
     }
-}; 
+}
+
+exports.changePassword = async (req, res) => {
+
+    if (!req.body.newPassword || !req.body.newPasswordConfirm || !req.body.password) {
+        res.status(401).json({
+            message: "Missing fields"
+        })
+    }
+
+    let user
+    try {
+        user = await User.findById(req.user.id).select('+password')
+    } catch (err) {
+        res.status(401).json({
+            message: "please login"
+        })
+    }
+
+    let flag
+    flag = await bcrypt.compare(req.body.password, user.password)
+
+    if (flag) {
+        user.password = req.body.newPassword
+        user.confirmPassword = req.body.newPasswordConfirm
+        await user.save()
+        const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET)
+        res.status(201).json({
+            token: token
+        })
+    } else {
+        res.status(401).json({
+            message: "Incorrect Password"
+        })
+    }
+} 
