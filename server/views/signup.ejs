@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Sign Up</title>
+</head>
+<body>
+    <%- include('./partials/nav.ejs') %>
+    <h1>Sign Up</h1>
+    <br>
+    <form id="signup">
+        Username
+        <br>
+        <input type="text" name="username" id="username" required></input> 
+        <br>
+        Email
+        <br>
+        <input type="text" name="email" id="email" required></input> 
+        <br>
+        Password
+        <br>
+        <input type="password" name="pass" id="pass" required></input> 
+        <br>
+        Confirm Password
+        <br>
+        <input type="password" name="confirmPass" id="confirmPass" required></input> 
+        <br>
+        <button id="submit">Submit</button>
+    </form>
+    <script>
+        const form = document.getElementById('signup');
+        form.addEventListener('submit', async (e) => 
+        {
+            e.preventDefault();
+            const username = form.username.value;
+            const email = form.email.value;
+            const pass = form.pass.value;
+            const confirmPass = form.confirmPass.value;
+            try {
+                const res = await fetch('/signup', {
+                    method: 'POST',
+                    body: JSON.stringify({ username: username , email: email, password: pass, confirmPassword: confirmPass }),
+                    headers: { 'Content-Type': 'application/json' }
+                });
+                const data = await res.json();
+                if(data.user)
+                {
+                    location.assign('/');
+                }
+            }
+            catch(err) {
+                console.log(err);
+            }
+        });
+    </script>
+    <%- include('./partials/footer.ejs') %>
+</body>
+</html> 

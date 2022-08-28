@@ -5,14 +5,16 @@ const sendEmail = require('./../email')
 const crypto = require('crypto')
 
 exports.signUp = (req, res) => {
-    res.status(200).send('<h3> SignUp </h3>')
+    res.render('signup')
 }
 
 exports.createUser = async (req, res) => {
+    console.log(req.body)
     try {
         const user = await User.create(req.body)
         let token
         token = jwt.sign({ id: user._id }, process.env.JWT_SECRET)
+        res.cookie('jwt',token,{httpOnly:true,maxAge:1000*60*60*24*7})
         res.status(201).json({
             user: user,
             token
@@ -27,7 +29,7 @@ exports.createUser = async (req, res) => {
 }
 
 exports.logIn = (req, res) => {
-    res.status(200).send('<h3> LogIn </h3>')
+    res.render('login')
 }
 exports.login = async (req, res) => {
     const { username, password } = req.body
@@ -99,12 +101,8 @@ exports.resetPassword = async (req, res) => {
         .createHash('sha256')
         .update(req.params.token)
         .digest('hex')
-    console.log(hashedToken)
-
     try {
         const user = await User.findOne({ passwordResetToken: hashedToken })
-        console.log(user)
-
         user.password = req.body.password
         user.confirmPassword = req.body.passwordConfirm
         user.passwordResetToken = undefined
@@ -123,7 +121,6 @@ exports.resetPassword = async (req, res) => {
 }
 exports.protect = async (req, res) => {
     if (!req.headers.authorization || !req.headers.authorization.startsWith('Bearer')) {
-        console.log('err')
         res.status(400).json({
             message: "Please Login In"
         })
@@ -132,7 +129,6 @@ exports.protect = async (req, res) => {
         try {
             const decode = await promisify(jwt.verify)(token, process.env.JWT_SECRET)
             const user = await User.findById(decode.id)
-            console.log(user.passwordChanged(decode.iat))
             if (user.passwordChanged(decode.iat)) {
                 throw new Error()
             }
