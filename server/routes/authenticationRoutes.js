@@ -5,7 +5,7 @@ authRouter.route('/signup').get(authController.signUp).post(authController.creat
 authRouter.route('/login').get(authController.logIn).post(authController.login)
 authRouter.route('/forgotPassword').post(authController.forgotPassword)
 authRouter.route('/resetPassword/:token').patch(authController.resetPassword)
-authRouter.route('/logOut').get(authController.logOut)
+authRouter.route('/logout').get(authController.logOut)
 authRouter.route('/changePassword').patch(authController.protect,authController.changePassword)
 authRouter.route('/protect').post(authController.protect)
 module.exports = authRouter

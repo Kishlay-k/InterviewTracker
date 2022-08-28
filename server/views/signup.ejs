@@ -24,7 +24,8 @@
         <br>
         <input type="password" name="confirmPass" id="confirmPass" required></input> 
         <br>
-        <button id="submit">Submit</button>
+        <br>
+        <button id="submit">Sign Up</button>
     </form>
     <script>
         const form = document.getElementById('signup');
@@ -35,6 +36,7 @@
             const email = form.email.value;
             const pass = form.pass.value;
             const confirmPass = form.confirmPass.value;
+
             try {
                 const res = await fetch('/signup', {
                     method: 'POST',
@@ -54,4 +56,4 @@
     </script>
     <%- include('./partials/footer.ejs') %>
 </body>
-</html> 
+</html>

@@ -33,7 +33,6 @@ exports.logIn = (req, res) => {
 }
 exports.login = async (req, res) => {
     const { username, password } = req.body
-    console.log(req.body)
     if (!req.body.username || !req.body.password) {
         res.status(400).json({
             message: "Enter All Details",
@@ -48,7 +47,7 @@ exports.login = async (req, res) => {
         }
         let token
         token = jwt.sign({ id: user._id }, process.env.JWT_SECRET)
-
+        res.cookie('jwt', token, { httpOnly: true, maxAge: 3*24*3600*1000 });
         res.status(201).json({
             token
         })
@@ -61,6 +60,8 @@ exports.login = async (req, res) => {
 }
 exports.logOut = (req, res) => {
     res.status(200).send('<h3> LogOut </h3>')
+    res.cookie('jwt', '', { maxAge: 1 });
+    res.redirect('/');
 }
 exports.forgotPassword = async (req, res) => {
     if (!req.body.username) {
