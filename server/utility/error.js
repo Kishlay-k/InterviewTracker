@@ -7,4 +7,4 @@ class Err extends Error {
     }
 };
 
-module.exports = Err; 
+module.exports = Err;

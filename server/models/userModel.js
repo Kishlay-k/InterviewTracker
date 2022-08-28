@@ -23,7 +23,7 @@ const userSchema = mongoose.Schema({
         type: String,
         default: "default.jpg"
     },
-    passwordChangeTime: Date,
+    //passwordChangeTime: Date,
     passwordChangeToken: String
     //isSolved
 });

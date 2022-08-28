@@ -4,4 +4,4 @@ const asyncErrorHandler = func => {
     };
 }
 
-module.exports = asyncErrorHandler; 
+module.exports = asyncErrorHandler;

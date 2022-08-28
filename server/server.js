@@ -22,4 +22,4 @@ mongoose
   })
 app.listen(port, () =>{
     console.log("Hello from the server side...");
-}); 
+});
