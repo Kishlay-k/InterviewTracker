@@ -1,8 +1,8 @@
 const cookieParser = require('cookie-parser');
 const express = require('express');
 const authRoutes = require('./routes/authRoutes')
-const Error404 = require('./utility/error')
-const globalErrorHandler = require('./utility/globalErrorHandler')
+const Err = require('./utility/error');
+const globalErrorHandler = require('./utility/globalErrorHandler');
 const app = express();
 app.use(express.json());
 app.use(cookieParser());
