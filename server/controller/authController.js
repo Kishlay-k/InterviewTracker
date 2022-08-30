@@ -70,20 +70,26 @@ exports.signUp = aEH(async (req, res, next) => {
     const newUser = await User.create({ username, password, email });
     jwtToCookie(newUser, 201, res);
 });
+
 exports.logIn = aEH(async (req, res, next) => {
     const { username, password } = req.body;
     const user = await User.findOne({ username }).select('+password');
     if(user && await bcrypt.compare(password, user.password)) jwtToCookie(user, 200, res);
     else next(new Err('Username or password invalid', 400));
 });
+
 exports.forgotPassword = aEH(async (req, res, next) => {
     const { email } = req.body;
     const user = await User.findOne({ email });
     if(!user) return next(new Err('User not found!!',404));
+
     let token = `${user.id}${Date.now()}${Math.round((Math.random()*10000000))}`;
+
     user.passwordChangeToken = token;
     await user.save({ validateBeforeSave:false });
+
     const link = `${req.protocol}://${req.get('host')}/api/v1/user/resetpassword/${token}`;
+
     try {
         const options = {
             email: user.email,
@@ -101,7 +107,9 @@ exports.forgotPassword = aEH(async (req, res, next) => {
         await user.save({ validateBeforeSave:false });
         return next(new Err('Something went wrong. Please try again later.', 500)); 
     }
+
 });
+
 exports.isLoggedIn = aEH(async (req, res, next) => {
     let token;
     if (req.headers.Authorization && req.headers.Authorization.startsWith('Bearer')) {
@@ -116,6 +124,7 @@ exports.isLoggedIn = aEH(async (req, res, next) => {
     req.user = user;
     next();
 });
+
 exports.changePassword = aEH(async (req, res, next) => {
     const { currPassword, newPassword, confirmNP } = req.body;
     if(newPassword !== confirmNP) next(new Err('Passwords do not match'), 400);
@@ -127,6 +136,7 @@ exports.changePassword = aEH(async (req, res, next) => {
     }
     jwtToCookie(user, 200, res);
 });
+
 exports.resetPassword = aEH(async (req,res,next)=>{
     const { newPassword, confirmNP } = req.body;
     if(newPassword !== confirmNP) next(new Err('Passwords do not match'), 400);
@@ -146,6 +156,7 @@ exports.resetPassword = aEH(async (req,res,next)=>{
     jwtToCookie(user, 200, res);
     
 });
+
 exports.logOut = (req, res, next) => {
     res.cookie('jwt', '');
     res.status(200).json({

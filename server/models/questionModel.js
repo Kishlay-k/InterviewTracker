@@ -8,12 +8,22 @@ const questionSchema = mongoose.Schema({
     },
     link: {
         type: String,
-        required: [true, "Enter Link"],
+        required: [true, 'Enter Link'],
     },
     description: {
         type: String,
     },
     versionKey: false
+}, {
+    toObject: { virtuals: true }, 
+    toJSON: { virtuals: true }
 });
+
+questionSchema.virtual('comments', {
+    ref: 'comment',
+    foreignField: 'question',
+    localField: '_id'
+});
+
 const Question = mongoose.model('question', questionSchema);
 module.exports = Question;

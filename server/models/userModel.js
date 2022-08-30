@@ -31,6 +31,14 @@ const userSchema = mongoose.Schema({
         type: mongoose.Schema.ObjectId,
         ref: 'question'
     }],
+    problemsets: [{
+        type: mongoose.Schema.ObjectId,
+        ref: 'problemset'
+    }],
+    // likedproblemsets: [{
+    //     type: mongoose.Schema.ObjectId,
+    //     ref: 'problemset'
+    // }],
     versionKey: false
 });
 
@@ -39,13 +47,6 @@ userSchema.pre('save', async function (next) {
     this.password = await bcrypt.hash(this.password, 12);
     next();
 });
-
-// userSchema.pre(/^find/, function (next) {
-//     this.populate({
-//         path: 'question'
-//     });
-//     next();
-// });
 
 const User = mongoose.model('user', userSchema);
 module.exports = User;

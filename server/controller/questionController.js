@@ -3,7 +3,6 @@ const Question = require('../models/questionModel');
 const aEH = require('../utility/asyncErrorHandler');
 
 exports.getAllQuestions = aEH(async (req, res, next) => {
-    // let query = Question.find();
     let page, limit, skip;
     page = req.query.page*1 || 1;
     limit = req.query.num*1 || 50;
@@ -20,9 +19,21 @@ exports.getAllQuestions = aEH(async (req, res, next) => {
 
 exports.topicWiseQuestions = aEH(async (req, res, next) => {
     const { topic } = req.params;
-    const question = await Question.find({ topic });
+    const questions = await Question.find({ topic });
     res.status(200).json({
         status: 'success',
-        data: { question }
+        data: { questions }
+
     });
 });
+
+exports.getQuestion = aEH(async (req,res,next)=>{
+    const id = req.params.id;
+    const question = await Question.findById(id).populate({ path: 'comments' });
+
+    res.status(200).json({
+        status: 'success',
+        data: { question },
+    });
+})
+

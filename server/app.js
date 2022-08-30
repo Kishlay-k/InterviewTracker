@@ -11,7 +11,7 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/api/v1/auth', authRoutes);
-app.use('/api/v1/questions', questionRoutes);
+app.use('/api/v1/problemset', questionRoutes);
 app.use('/api/v1/user', userRoutes);
 app.use('*', (req, res, next) => {
     next(new Err("There is nothing for you here >_<", 404));
