@@ -14,7 +14,21 @@ const commentSchema = mongoose.Schema({
         ref: 'question'
     },
     versionKey: false
+},{
+    toObject:{virtuals:true},
+    toJson:{virtuals:true}
 });
+
+commentSchema.pre(/^find/,function(next){
+    
+    this.populate({
+        path:'user',
+        select:'-solved -problemsets'
+    });
+    
+    next();
+})
+
 
 const Comment = mongoose.model('comment', commentSchema);
 module.exports = Comment;

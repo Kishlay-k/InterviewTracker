@@ -3,6 +3,24 @@ const Comment = require('../models/commentModel');
 const aEH = require('../utility/asyncErrorHandler');
 const Question = require('../models/questionModel');
 
+
+exports.getAllComment = aEH(async (req,res,next)=>{
+    const comments = await Comment.find();
+    res.status(200).json({
+        status:'success',
+        comments
+    });
+});
+
+exports.getComment = aEH(async (req,res,next)=>{
+    const id = req.params.id;
+    const comment = await Comment.findById(id);
+    res.status(200).json({
+        status:'success',
+        comment
+    })
+})
+
 exports.comment = aEH(async (req, res, next) => {
     const { text } = req.body;
     const { id } = req.params;

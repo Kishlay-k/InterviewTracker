@@ -22,7 +22,7 @@ const questionSchema = mongoose.Schema({
 questionSchema.virtual('comments', {
     ref: 'comment',
     foreignField: 'question',
-    localField: '_id'
+    localField: '_id',
 });
 
 const Question = mongoose.model('question', questionSchema);
