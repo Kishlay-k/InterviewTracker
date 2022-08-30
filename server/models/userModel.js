@@ -24,7 +24,10 @@ const userSchema = mongoose.Schema({
         default: "default.jpg"
     },
     //passwordChangeTime: Date,
-    passwordChangeToken: String
+    passwordChangeToken: {
+        type: String,
+        select: false
+    }
     //isSolved
 });
 userSchema.pre('save', async function (next) {
