@@ -12,7 +12,8 @@ const questionSchema = mongoose.Schema({
     },
     description: {
         type: String,
-    }
+    },
+    versionKey: false
 });
 const Question = mongoose.model('question', questionSchema);
 module.exports = Question;
