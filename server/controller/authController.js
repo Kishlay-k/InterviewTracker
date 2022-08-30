@@ -88,7 +88,7 @@ exports.forgotPassword = aEH(async (req, res, next) => {
     user.passwordChangeToken = token;
     await user.save({ validateBeforeSave:false });
 
-    const link = `${req.protocol}://${req.get('host')}/api/v1/user/resetpassword/${token}`;
+    const link = `${req.protocol}://${req.get('host')}/api/v1/auth/resetpassword/${token}`;
 
     try {
         const options = {
