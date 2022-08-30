@@ -35,6 +35,14 @@ const userSchema = mongoose.Schema({
         type: mongoose.Schema.ObjectId,
         ref: 'problemset'
     }],
+    friends: [{
+        type: mongoose.Schema.ObjectId,
+        ref: 'user'
+    }],
+    friendRequests: [{
+        type: mongoose.Schema.ObjectId,
+        ref: 'user'
+    }],
     // likedproblemsets: [{
     //     type: mongoose.Schema.ObjectId,
     //     ref: 'problemset'

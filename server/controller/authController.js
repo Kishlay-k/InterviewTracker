@@ -42,6 +42,7 @@ const multerStorage = multer.diskStorage({
         cb(null, `${name}_${Date.now()}.${ext}`);
     }
 });
+
 const multerFilter = (req, file, cb) => {
     if(!file.mimetype.startsWith('image')) {
         cb(new Err('Not an image', 400), false);
@@ -49,6 +50,7 @@ const multerFilter = (req, file, cb) => {
         cb(null, true);
     }
 }
+
 const upload = multer({ storage: multerStorage, fileFilter: multerFilter });
 exports.updatePhoto = upload.single('photo');
 
