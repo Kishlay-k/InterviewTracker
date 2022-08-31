@@ -9,7 +9,6 @@ exports.getAllQuestions = aEH(async (req, res, next) => {
     skip = (page-1) * limit;
     let query = Question.find().skip(skip).limit(limit).populate({ path: 'comments' });
     const question = await query;
-    console.log(req.query);
     res.status(200).json({
         status: 'success',
         num: question.length,

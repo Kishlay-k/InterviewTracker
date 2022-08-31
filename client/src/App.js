@@ -8,11 +8,12 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 const Login = () => {
   return <h1>Login</h1>;
 }
+
 const Signup = () => {
   return <h1>Signup</h1>;
 }
 
-const App = () => {
+const App = ({ isLoaded }) => {
   return (
     <div>
       <Header/>
@@ -23,6 +24,6 @@ const App = () => {
       </Switch>
     </div>
   );
-}
+};
 
 export default App;

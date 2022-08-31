@@ -1,5 +1,8 @@
 const types = {
-    SET_QUESTION: 'SET_QUESTION'
+    FETCHING_START: 'FETCHING_START',
+    FETCH_SUCCESS: 'FETCH_SUCCESS',
+    FETCH_FAIL: 'FETCH_FAIL'
+
 };
 
 export default types;

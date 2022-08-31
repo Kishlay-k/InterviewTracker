@@ -6,6 +6,9 @@ const questionSchema = mongoose.Schema({
     topic: {
         type: String,
     },
+    index: {
+        type: Number,
+    },
     link: {
         type: String,
         required: [true, 'Enter Link'],

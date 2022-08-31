@@ -11,7 +11,6 @@ const Header = () =>{
     setState(e => !e);
   }
 
-
     return(
       <nav className="navbar sticky-top navbar-expand-lg navbar-dark bg-dark">
         <Link to = '/' className = 'navbar-brand'>Interview Tracker</Link>

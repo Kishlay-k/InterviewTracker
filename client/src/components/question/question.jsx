@@ -2,14 +2,12 @@ import React from 'react';
 
 export default function Question({ question }) {
     return (
-        <div className = 'problem'>
-            <div>
-            <h4 className = 'title'>{ question.title }</h4>
+        <li className="list-group-item d-flex justify-content-between align-items-start">
+            <div className="ms-auto me-auto">{question.index}</div>
+            <div className="ms-auto me-auto">
+                <div className="fw-bold">{ question.title }</div>
             </div>
-            <div>
-            <span className = 'comment-count'>{question.comments.length}</span>
-            </div>
-        </div>
-      
+            <span className="badge bg-light rounded-pill">{ question.comments.length }</span>
+        </li>
     )
 }
