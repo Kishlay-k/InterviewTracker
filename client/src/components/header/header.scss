@@ -1,0 +1,22 @@
+.header{
+
+    .container{
+
+        .logo{
+            float: left;
+            margin-left: 80px;
+            margin-top : 20px;
+        }
+    
+        .nav{
+            float: right;
+            margin-top : 20px;
+            margin-right: 80px;
+            align-items: right;
+
+            .nav-element{
+                padding-left: 10px;
+            }
+        }
+    }
+}
