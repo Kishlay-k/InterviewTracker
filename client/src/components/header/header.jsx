@@ -1,27 +1,35 @@
-import React from 'react';
+import React, {useState}from 'react';
 import { Link } from 'react-router-dom';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
-import './header.scss';
 
 const Header = () =>{
+  const [showCollapsedMenu, setState] = useState(false);
+
+
+  const toggleMenu = ()=>{
+    setState(e => !e);
+  }
+
+
     return(
-      <header className = 'header'>
-
-        <div className = 'container'>
-
-            <div className = 'logo'>
-                <Link to = '/'> <img src = "" alt = 'Hello' />  Interview Tracker </Link>
-            </div>
-
-            <div className = 'nav'>
-                <Link className = 'nav-element' to = '/login'> Login</Link>
-                <Link className = 'nav-element' to = '/logout'> Logout </Link>
-                <Link className = 'nav-element' to = '/'><img scr = '' alt = 'hello' /></Link>
-            </div>
-
+      <nav className="navbar sticky-top navbar-expand-lg navbar-dark bg-dark">
+        <Link to = '/' className = 'navbar-brand'>Interview Tracker</Link>
+        <button className="navbar-toggler" type="button" onClick = {toggleMenu} data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+          <span className="navbar-toggler-icon"></span>
+        </button>
+        <div className = {`collapse navbar-collapse ${showCollapsedMenu ? 'show' : ''}`} id="navbarText">
+          <ul className="navbar-nav ml-auto">
+            <li className="nav-item ">
+              <Link className="nav-link" to = '/login'>Login<span className="sr-only">(current)</span></Link>
+            </li>
+            <li className="nav-item">
+              <Link className="nav-link" to="/signup">Signup</Link>
+            </li>
+          </ul>
         </div>
-        
-      </header>
+
+      </nav>
     );
 };
 

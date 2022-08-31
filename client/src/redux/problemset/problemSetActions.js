@@ -8,9 +8,9 @@ export const setQuestions = (data) => {
     type: types.SET_QUESTION
 }}
 
-export const fetchQuestions = () => {
+export const fetchQuestions = (page,questionPerPage) => {
     return async dispatch => {
-        const res = await getQuestions();
+        const res = await getQuestions(page,questionPerPage);
         dispatch(setQuestions(res.data.data.question));
     }
 };

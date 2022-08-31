@@ -1,19 +1,15 @@
 import React from 'react'
 import Header from './components/header/header';
 import './App.scss';
-import { Route, Switch, Redirect } from "react-router-dom";
+import { Route, Switch} from "react-router-dom";
 import ProblemSet from './pages/problemset/problemSet';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 const Login = () => {
   return <h1>Login</h1>;
 }
-
-const Home = () => {
-  return <h1>Home</h1>;
-}
-
-const Logout = () => {
-  return <h1>Logout</h1>;
+const Signup = () => {
+  return <h1>Signup</h1>;
 }
 
 const App = () => {
@@ -23,7 +19,7 @@ const App = () => {
       <Switch> 
         <Route exact path='/' component={ ProblemSet }/>
         <Route path='/login' component={ Login }/>
-        <Route path='/logout' component={ Logout }/>
+        <Route path='/signup' component={ Signup }/>
       </Switch>
     </div>
   );
