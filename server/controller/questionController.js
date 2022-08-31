@@ -27,8 +27,8 @@ exports.topicWiseQuestions = aEH(async (req, res, next) => {
 });
 
 exports.getQuestion = aEH(async (req,res,next)=>{
-    const id = req.params.id;
-    const question = await Question.findById(id).populate({ path: 'comments' });
+    const index = 1*req.params.index;
+    const question = await Question.findOne({index:index}).populate({ path: 'comments' });
 
     res.status(200).json({
         status: 'success',

@@ -1,5 +1,13 @@
-.pagination {
-    // padding: 1.5rem 10rem 10rem 22rem;
-    // margin: 0rem 15rem 10rem 22rem;
-    align-content: center;
+.problemset{
+    display: flex;
+    flex-direction: column;
+    width: 65%;
+    overflow: hidden;
+    margin: 5% 15% 0% 15%;
+
+    .pagination{
+        margin: auto;
+        padding-top: 0.5em;
+        padding-bottom: 1.5em;
+    }
 }

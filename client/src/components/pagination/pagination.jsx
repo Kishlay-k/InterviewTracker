@@ -9,7 +9,7 @@ export default function Pagination({items,paginate,page}) {
     }
     return (
         <nav>
-            <ul className = "pagination">
+            <ul className = "pagination pagination-sm">
                 {pagenumbers.map(number=> (
                     <li key = {number} className = {`page-item ${page === number ? 'active' : ''}`}>
                         <Link to = '/' onClick = {()=> paginate(number)} className = 'page-link' >{number}</Link>

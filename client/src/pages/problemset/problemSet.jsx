@@ -3,15 +3,16 @@ import { connect } from 'react-redux';
 import { fetchQuestions } from '../../redux/problemset/problemSetActions';
 import { isLoaded } from '../../redux/problemset/problemSetSelector';
 import ProblemSetComponent from '../../components/problemSet/problemSetComponent';
-import WithSpinner from '../../components/withSpinner/withSpinner'
+import WithSpinner from '../../components/withSpinner/withSpinner';
+import QuestionDetail from '../../pages/questionDetail/questionDetail';
+import {Route, Switch} from 'react-router-dom';
 
-import './problemSet.scss'
-
-
-const ProblemSetWithSpinner = WithSpinner(ProblemSetComponent)
+const ProblemSetWithSpinner = WithSpinner(ProblemSetComponent);
+const Error404 = () => {
+    return <h1>Error</h1>;
+  }
 
 function ProblemSet({ fetchQuestions, isLoaded, match }) {
-    console.log(match);
     const [page,setPage] = useState(1);
     const [questionPerPage, setQuestionPerPage] = useState(50);
 
@@ -28,7 +29,12 @@ function ProblemSet({ fetchQuestions, isLoaded, match }) {
     }
     
     return (
-        <ProblemSetWithSpinner paginate={ paginate } page = { page } questionPerPage={ questionPerPage } isLoading = { !isLoaded }/>
+        <Switch>
+            <Route exact path = {`${match.path}`}><ProblemSetWithSpinner paginate={ paginate } page = { page } questionPerPage={ questionPerPage } isLoading = { !isLoaded }/></Route>
+            <Route path = {`${match.path}:index`}><QuestionDetail/></Route>
+            <Route path = "*" component = {Error404} />
+        </Switch>
+        
     )
 }
 
