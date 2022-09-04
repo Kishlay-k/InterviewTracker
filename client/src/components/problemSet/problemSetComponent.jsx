@@ -25,11 +25,11 @@ const ProblemSetComponent = ({ questionPerPage, paginate, page, problemset,user,
                             user ? <div className = "ml-auto">Solved</div> : null
                         }
                     </li>
-                    {   problemset?.map(e => {
+                    {   
+                        problemset?.map(e => {
                             let checked = user?.solved.find(el => el == e.id);
                             return <Question key={ e.id } question={ e } checked = {checked}/>
-                            }
-                        )
+                        })
                     }
                 </ol>
                 <div className="pagination">

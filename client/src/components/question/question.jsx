@@ -1,14 +1,14 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {Link,withRouter} from 'react-router-dom';
 import {connect} from 'react-redux';
 import {getUserSelector} from '../../redux/user/userSelector';
 import {toggleSolved} from '../../api/index';
 import {toggleSolvedAction} from '../../redux/user/userActions';
 
-function Question({ question, user,checked,toggleSolvedAction }) {
+function Question({ question, user, checked, toggleSolvedAction }) {
     const color = '#f8f9fa';
 
-    let ch = checked ? true:false;
+    let ch = checked===undefined ? false : true;
 
     const toggleState = async(id) =>{
         setState(e => !e);
@@ -20,7 +20,11 @@ function Question({ question, user,checked,toggleSolvedAction }) {
         }
     };
 
-    const[state,setState] =useState(ch);
+    const [state, setState] = useState(ch);
+
+    useEffect(() => {
+        setState(ch);
+    }, [ch]);
 
     const colorChange = (e)=>{
         e.target.closest('li').style.background = color;

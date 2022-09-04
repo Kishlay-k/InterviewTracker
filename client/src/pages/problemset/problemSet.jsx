@@ -4,14 +4,11 @@ import {fetchQuestions} from '../../redux/problemset/problemSetActions';
 import {isLoaded} from '../../redux/problemset/problemSetSelector';
 import ProblemSetComponent from '../../components/problemSet/problemSetComponent';
 import WithSpinner from '../../components/withSpinner/withSpinner';
-import QuestionDetail from '../../pages/questionDetail/questionDetail';
-import {Route, Switch} from 'react-router-dom';
-import TopicWiseQuestions from '../topicWiseQuestions/topicWiseQuestions';
-import Errorpage from '../errorpage';
 
 const ProblemSetWithSpinner = WithSpinner(ProblemSetComponent);
 
-function ProblemSet({fetchQuestions, isLoaded, match}) {
+function ProblemSet({fetchQuestions, isLoaded}) {
+
     const [page,setPage] = useState(1);
     const [questionPerPage, setQuestionPerPage] = useState(50);
 
@@ -29,20 +26,13 @@ function ProblemSet({fetchQuestions, isLoaded, match}) {
     
     return (
         <div>
-            <div>
-                <Switch>
-                    <Route exact path = {`${match.path}`}><ProblemSetWithSpinner paginate={paginate} page = {page} questionPerPage={questionPerPage} isLoading = {!isLoaded}/></Route>
-                    <Route exact path = {`${match.path}/problem/:index`}><QuestionDetail/></Route>
-                    <Route exact path = {`${match.path}/topicwise/:topic`}><TopicWiseQuestions/></Route>
-                    <Route path = "*" component = {Errorpage} />
-                </Switch>
-            </div>
+            <ProblemSetWithSpinner paginate={paginate} page = {page} questionPerPage={questionPerPage} isLoading = {!isLoaded}/>
         </div>
     )
 }
 
 const mapDispatchToProps = (dispatch) => ({
-    fetchQuestions: (page,questionPerPage) => dispatch(fetchQuestions(page,questionPerPage))   
+    fetchQuestions: (page,questionPerPage) => dispatch(fetchQuestions(page,questionPerPage)),
 });
 
 const mapStateToProps = (state) => ({

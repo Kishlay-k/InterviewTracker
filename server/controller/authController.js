@@ -4,13 +4,14 @@ const aEH = require('../utility/asyncErrorHandler');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const sendEmail = require('../utility/sendEmail');
-const multer  = require('multer')
+const multer  = require('multer');
+const {ProblemSet}  = require('../models/personalProblemSetModel');
+
 
 const jwtToCookie = (user, status, res) => {
     const token = jwt.sign({ id: user.id }, process.env.SECRETKEY);
     const cookieOptions = {
         expires: new Date(Date.now() + 90 * 24 * 60 * 60 * 1000),
-        // httpOnly: process.env.NODE_ENV === 'production' ? true : false,
         httpOnly: true,
         secure: process.env.NODE_ENV === 'production' ? true : false
     };
@@ -70,8 +71,12 @@ exports.signUp = aEH(async (req, res, next) => {
 
     const { username, email, password, confirmPassword } = req.body;
     if(password !== confirmPassword) next(new Err('Passwords do not match',400));
-    const newUser = await User.create({ username, password, email });
-    jwtToCookie(newUser, 201, res);
+    const list = await ProblemSet.create({name: 'Favorite'});
+    let list1 = [];
+    list1.push(list.id);  
+    const newUser = await User.create({ username, password, email,problemsets:[...list1] }); 
+    const user = await User.findById(newUser.id);    
+    jwtToCookie(user, 201, res);
 });
 
 exports.logIn = aEH(async (req, res, next) => {

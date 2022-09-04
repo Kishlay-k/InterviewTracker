@@ -10,10 +10,12 @@ const ProblemSetWithSpinner = WithSpinner(ProblemSetComponent);
 
 const TopicWiseQuestions = ({fetchTopicwise, isLoaded, match}) => {
     const topic = match.params.topic;
+
     useEffect(() => {
         const fetchTopicWise = (topic) => fetchTopicwise(topic);
         fetchTopicWise(topic);
     }, [topic, fetchTopicwise]);
+
     return (
          <ProblemSetWithSpinner isLoading={!isLoaded} topic = {topic}/>
     )

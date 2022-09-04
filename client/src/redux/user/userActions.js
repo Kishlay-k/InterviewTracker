@@ -77,4 +77,19 @@ export const updatePhoto = (data) => {
         type: types.UPDATE_PHOTO,
         payload: data
     }
+};
+
+export const addProblem = (data, id) => {
+    return {
+        type: types.ADD_PROBLEM,
+        payload: {data, id}
+    }
+};
+
+export const addAList = (data) => {
+    console.log(data);
+    return {
+        type: types.ADD_A_LIST,
+        payload: data
+    }
 }

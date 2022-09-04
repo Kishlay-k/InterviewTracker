@@ -12,8 +12,6 @@ function ProfileComponent({match, user, updatePhoto}) {
 
     const [file, setfile] = useState(null);
     const [email, setemail] = useState('');
-    // eslint-disable-next-line no-unused-vars
-    const [state, setstate] = useState(false);
 
     let value = '';
 
@@ -26,7 +24,6 @@ function ProfileComponent({match, user, updatePhoto}) {
     }
 
     const handlePhotoChange = (event) => {
-        console.log(event.target.files[0]);
         setfile(event.target.files[0]);
     }
 
@@ -36,9 +33,8 @@ function ProfileComponent({match, user, updatePhoto}) {
         data.append('photo', file);
         try {
             const res = await updateProfilePhoto(data);
-            console.log(res);
             updatePhoto(res.data.photo);
-            setstate(e => !e);
+            setfile(null);
             alert("success");
         } catch(err) {
             alert(err.response.data.message)
@@ -48,8 +44,7 @@ function ProfileComponent({match, user, updatePhoto}) {
     const handleDetailSubmit = async(e)=>{
         e.preventDefault();
         try{
-            const res = await updateDetails({email});
-            console.log(res);
+            await updateDetails({email});
             alert("success");
         } catch(err) {
             console.log(err.response);

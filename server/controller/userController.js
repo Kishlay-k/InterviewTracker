@@ -3,7 +3,7 @@ const aEH = require('../utility/asyncErrorHandler');
 const Err = require('../utility/error');
 const Question = require('../models/questionModel');
 const { ProblemSet, Problem } = require('../models/personalProblemSetModel');
-const { mapReduce } = require('../models/userModel');
+
 
 exports.getAllUsers = aEH(async (req, res, next) => {
     const users = await User.find();
@@ -73,7 +73,6 @@ exports.addToProblemSet = aEH(async (req, res, next) => {
 
 exports.friendRequests = aEH(async (req, res, next) => {
     const { action } = req.body;
-    console.log(action);
     if(action !== 'accept' && action !== 'reject') next(new Err('Invalid Action', 400));
     let friendReq = req.user.friendRequests;
     let friends = req.user.friends;
@@ -116,6 +115,58 @@ exports.removeFriend = aEH(async (req, res, next) => {
     res.status(200).json({
         status: 'success'
     });
+});
+
+exports.addToFavorite =  aEH(async (req, res, next) => {
+    const {link,title,topic} = req.body;
+    const newProblem = await Problem.create({link,title,topic});
+    const user = req.user;
+    let problemsets = user.problemsets;
+    let arr = problemsets.find(el => el.name === 'Favorite');
+    const id = newProblem.id;
+    arr.list.push(id);
+    const problemset = await ProblemSet.findByIdAndUpdate(arr.id,{list:arr.list},{new: true});
+
+    const usr = await User.findById(user.id);
+
+    problemsets = usr.problemsets;
+
+    res.status(200).json({
+        problemsets
+    });
+
+});
+
+exports.deleteList = aEH(async (req, res, next) => {
+    const id = req.params.id;
+
+    let playlist = await ProblemSet.findById(id);
+    playlist.list.forEach(async el => {
+        await Problem.findByIdAndDelete(el._id);
+    })
+    await ProblemSet.findByIdAndDelete(id);
+    const usr = await User.findById(req.user.id);
+    let problemsets = req.user.problemsets;
+    problemsets = problemsets.filter(e => e._id != id);
+    const user = await User.findByIdAndUpdate(req.user.id, {problemsets}, {new: true});
+    res.status(200).json({
+        problemsets: usr.problemsets
+    })
+});
+
+exports.deleteListItem = aEH(async (req, res, next) => {
+    const pid = req.params.id;
+    const {sid} = req.body;
+
+    let problemset = await ProblemSet.findById(sid);
+    problemsetList = problemset.list.filter(e => e._id != pid);
+    const temp = await ProblemSet.findByIdAndUpdate(sid, {list: problemsetList}, {new: true});
+    await Problem.findByIdAndDelete(pid);
+    const usr = await User.findById(req.user.id);
+    req.user = usr;
+    res.status(200).json({
+        problemsets: usr.problemsets
+    })
 });
 
 // exports.likeProblemSet = aEH(async (req, res, next) => {
