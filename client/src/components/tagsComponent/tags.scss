@@ -1,0 +1,10 @@
+.tags {
+    margin: 7% 4% 5% 2%;
+    width: 14em;
+    height: min-content;
+    display: flex;
+    flex-wrap: wrap;
+    .tag {
+        padding: 0.75%;
+    }
+}

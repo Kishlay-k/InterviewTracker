@@ -18,11 +18,11 @@ exports.getAllQuestions = aEH(async (req, res, next) => {
 
 exports.topicWiseQuestions = aEH(async (req, res, next) => {
     const { topic } = req.params;
-    const questions = await Question.find({ topic });
+    const questions = await Question.find({ topic }).populate({ path: 'comments'});
+    if (!questions.length) return next(new Err('No results', 404));
     res.status(200).json({
         status: 'success',
         data: { questions }
-
     });
 });
 
@@ -35,4 +35,3 @@ exports.getQuestion = aEH(async (req,res,next)=>{
         data: { question },
     });
 })
-

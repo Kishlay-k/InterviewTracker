@@ -1,13 +1,18 @@
 import React from 'react'
 import Header from './components/header/header';
-import './App.scss';
-import { Route, Switch} from "react-router-dom";
+import { Route, Switch, withRouter, Redirect } from "react-router-dom";
 import ProblemSet from './pages/problemset/problemSet';
 import 'bootstrap/dist/css/bootstrap.min.css';
+
+import './App.scss';
 
 
 const Login = () => {
   return <h1>Login</h1>;
+}
+
+const Home = ({ history }) => {
+  return <Redirect to={history.push('problemset')}/>;
 }
 
 const Signup = () => {
@@ -17,12 +22,13 @@ const Error404 = () => {
   return <h1>Error</h1>;
 }
 
-const App = ({ isLoaded }) => {
+const App = ({ history }) => {
   return (
     <div>
       <Header/>
-      <Switch> 
-        <Route path='/' component={ ProblemSet }/>
+      <Switch>
+        <Route exact path='/'><Home history={history}/></Route>
+        <Route path='/problemset' component={ ProblemSet }/>
         <Route path='/login' component={ Login }/>
         <Route path='/signup' component={ Signup }/>
         <Route path = '*' component = {Error404}/>
@@ -31,4 +37,4 @@ const App = ({ isLoaded }) => {
   );
 };
 
-export default App;
+export default withRouter(App);

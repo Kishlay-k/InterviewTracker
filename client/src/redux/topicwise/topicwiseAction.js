@@ -1,5 +1,5 @@
 import types from './actionType';
-import {getQuestion} from '../../api/index';
+import {getTopicwiseQuestion} from '../../api/index';
 
 export const fetchingSuccess = (data) => {
     return {
@@ -14,14 +14,16 @@ export const fetchFail = (err) => {
 }};
 
 export const fetchStart = () => {
+    console.log('I am here');
     return {
     type: types.FETCHING_START
 }};
 
-export const fetchQuestion = (id) => {
+export const fetchTopicwise = (topic) => {
     return async dispatch => {
         dispatch(fetchStart());
-        const res = await getQuestion(id);
-        dispatch(fetchingSuccess(res.data.data.question));
+        const res = await getTopicwiseQuestion(topic);
+        console.log(res);
+        dispatch(fetchingSuccess(res.data.data.questions));
     }
 };

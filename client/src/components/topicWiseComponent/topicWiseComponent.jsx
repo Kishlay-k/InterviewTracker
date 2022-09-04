@@ -1,34 +1,31 @@
 import React from 'react'
 import Question from '../../components/question/question';
-import Page from '../../components/pagination/pagination';
-import { problemset } from '../../redux/problemset/problemSetSelector';
+import { topicWiseProblemSet } from '../../redux/topicwise/topicwiseSelector';
 import { connect } from 'react-redux';
 import TagsComponent from '../tagsComponent/tagsComponent';
 
-import './problemSetComponent.scss'
+import './topicWiseComponent.scss'
 
-const ProblemSetComponent = ({ questionPerPage, paginate, page, problemset}) => {
-    console.log(problemset);
+
+
+const TopicWiseComponent = ({ topicWiseProblemSet }) => {
     return (
         <div className="d-flex justify-content-around flex-wrap">
-            <div className = "problemset">
+            <div className = "topicwise">
 
                 <ol className="list-group">
-                    <li className="list-group-item d-flex">
-                            <div className="pr-4">#</div>
+                    <li className="list-group-item d-flex align-items-start row">
+                            <div className = "col-1">#</div>
                             <div>
                                 <div>Title</div>
                             </div>
                             <div className = "ml-auto">Comment</div>
                     </li>
-                    {   problemset?.map(e => 
+                    {   topicWiseProblemSet?.map(e => 
                             <Question key={ e.id } question={ e }/>
                         )
                     }
                 </ol>
-                <div className="pagination">
-                <Page items ={450/questionPerPage} paginate = {paginate} page = {page}/>
-                </div>
             </div>
             <TagsComponent/>
         </div>
@@ -36,7 +33,7 @@ const ProblemSetComponent = ({ questionPerPage, paginate, page, problemset}) => 
 };
 
 const mapStateToProps = (state) => ({
-    problemset: problemset(state)
+    topicWiseProblemSet: topicWiseProblemSet(state)
 });
 
-export default connect(mapStateToProps)(ProblemSetComponent);
+export default connect(mapStateToProps)(TopicWiseComponent);
