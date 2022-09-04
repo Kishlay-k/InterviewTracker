@@ -17,7 +17,6 @@ exports.getUser = aEH(async (req, res, next) => {
     let query = User.findOne({ username: req.params.username });
     query = query.populate({ path: 'friendRequests', select: '-solved -friendRequests -problemsets -__v' });
     query = query.populate({ path: 'friends', select: '-solved -friendRequests -__v' });
-    const user = await query;
     if(!user) return next(new Err('User does not exist', 400));
     res.status(200).json({
         status: 'success',
@@ -50,10 +49,10 @@ exports.createProblemSet = aEH(async (req, res, next) => {
     const problemSet = await ProblemSet.create({ name, public, description });
     let arr = user.problemsets || [];
     arr.push(problemSet.id);
-    await User.findByIdAndUpdate(user.id, { problemsets: arr});
+    const updatedProblemSet = await User.findByIdAndUpdate(user.id, { problemsets: arr} , {new: true},).populate('problemsets');
     res.status(200).json({
         status: 'success',
-        problemSet
+        updatedProblemSet
     });
 });
 

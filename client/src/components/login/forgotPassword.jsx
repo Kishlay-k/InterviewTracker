@@ -30,6 +30,7 @@ export default function ForgotPassword() {
         }
         
     };
+    
     return (
         <div>
             {
@@ -41,7 +42,7 @@ export default function ForgotPassword() {
                         <div className = "form">
                             <form onSubmit = {handleSubmit}>
                                 <Form name = "email" type = "email" value = {data.email} id = "#email" required = {true} handleChange = {handleChange} label = "Email" />
-                                <button className = "btn btn-primary" type = "submit">Submit</button> 
+                                <button className = "btn btn-primary" type = "submit">Submit</button>
                             </form>
                         </div>
                     </div>

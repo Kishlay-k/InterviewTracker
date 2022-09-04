@@ -15,7 +15,7 @@ function LoginComponent({login,history,user,signup}) {
     const [toggle,setToggle] = useState(false);
 
     const [loginData,setLoginData] = useState({
-        username: '',
+        query: '',
         password: ''
     });
 
@@ -56,17 +56,19 @@ function LoginComponent({login,history,user,signup}) {
                             <Form  name = "password" type = "password" value = {signupData.password} id = "#password" required = {true} handleChange = {handleChange} label = "Password" />
                             <Form  name = "confirmPassword" type = "password" value = {signupData.confirmPassword} id = "#confirmPassword" required = {true} handleChange = {handleChange} label = "ConfirmPassword" />
                             <button className = "btn btn-primary" type = "submit">Submit</button>
-                            <div>Have an account? <span className = "acc" onClick = {()=> setToggle((e)=> !e) }>Login</span></div>
+                            <div className="mt-2">Have an account? <span className = "acc" onClick = {()=> setToggle((e)=> !e) }>Login</span></div>
                         </form>
                     </div>
                 :
                     <div className = "form">
                         <form onSubmit = {handleSubmit}>
-                            <Form name = "username" type = "username" value = {loginData.username} id = "#username" required = {true} handleChange = {handleChange} label = "Username" />
+                            <Form name = "query" type = "text" value = {loginData.query} id = "#query" required = {true} handleChange = {handleChange} label = "Username/Email" />
                             <Form  name = "password" type = "password" value = {loginData.password} id = "#password" required = {true} handleChange = {handleChange} label = "Password" />
                             <button className = "btn btn-primary" type = "submit">Submit</button> 
-                            <div className = "acc" onClick = {()=> setToggle((e)=> !e) }>Create an account</div>
-                            <Link to = '/forgotpassword' className = "forgotPass">Forgot Password</Link>
+                            <div className="d-flex justify-content-between mt-2">
+                                <div className = "acc" onClick = {()=> setToggle((e)=> !e) }>{`Create an account >`}</div>
+                                <Link to = '/forgotpassword' className = "forgotPass">Forgot Password?</Link>
+                            </div>
                         </form>
                     </div>
             }

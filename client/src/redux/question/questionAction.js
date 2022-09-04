@@ -21,7 +21,12 @@ export const fetchStart = () => {
 export const fetchQuestion = (id) => {
     return async dispatch => {
         dispatch(fetchStart());
-        const res = await getQuestion(id);
-        dispatch(fetchingSuccess(res.data.data.question));
+        try {
+            const res = await getQuestion(id);
+            dispatch(fetchingSuccess(res.data.data.question));
+        } catch(err) {
+            dispatch(fetchFail(err.response.data.message));
+            alert(err.response.data.message);
+        }
     }
 };

@@ -16,24 +16,29 @@ const Header = ({user}) =>{
             <span className="navbar-toggler-icon"></span>
         </button>
         <div className = {`collapse navbar-collapse ${showCollapsedMenu ? 'show' : ''}`} id="navbarText">
-            <ul className="navbar-nav ml-auto">
+            
             {
                 user ? 
-                        <div>
-                            <li className="nav-item ">
-                                <Link className="nav-link" to = {`/${user.username}/profile`}>Profile<span className="sr-only">(current)</span></Link>
-                            </li>
-                            <li className="nav-item">
-                                <Link className="nav-link" to="/logout">Logout</Link>
-                            </li>
-                        </div>
-                    :  
-                    <li className="nav-item ">
-                        <Link className="nav-link" to = '/login'>Login<span className="sr-only">(current)</span></Link>
-                    </li>
+                    <ul className="navbar-nav ml-auto">
+                        <li className="nav-item">
+                            <Link className="nav-link" to = {`/${user.username}/profile`}>{user.username}<span className="sr-only">(current)</span></Link>
+                        </li>
+                        <li className="nav-item">
+                            <Link className="nav-link" to = {`/list`}>My List<span className="sr-only">(current)</span></Link>
+                        </li>
+                        <li className="nav-item">
+                            <Link className="nav-link" to="/logout">Logout</Link>
+                        </li>
+                    </ul>
+                        
+                : 
+                    <ul className="navbar-nav ml-auto">
+                        <li className="nav-item">
+                            <Link className="nav-link" to = '/login'>Login<span className="sr-only">(current)</span></Link>
+                        </li>
+                    </ul>
             }
             
-            </ul>
         </div>
         </nav>
     );

@@ -2,7 +2,7 @@ import React from 'react';
 import './comment.scss';
 
 export default function Comment({comment}) {
-    //console.log(comment);
+    console.log(comment);
     return (
         <div className="card p-3">
             <div className="d-flex justify-content-between align-items-start">

@@ -6,13 +6,10 @@ import ProblemSetComponent from '../../components/problemSet/problemSetComponent
 import WithSpinner from '../../components/withSpinner/withSpinner';
 import QuestionDetail from '../../pages/questionDetail/questionDetail';
 import {Route, Switch} from 'react-router-dom';
-import TopicWiseQuestions from '../topicWiseQuestions/topicWiseQuestions'
+import TopicWiseQuestions from '../topicWiseQuestions/topicWiseQuestions';
+import Errorpage from '../errorpage';
 
 const ProblemSetWithSpinner = WithSpinner(ProblemSetComponent);
-
-const Error404 = () => {
-    return <h1>Error</h1>;
-}
 
 function ProblemSet({fetchQuestions, isLoaded, match}) {
     const [page,setPage] = useState(1);
@@ -37,7 +34,7 @@ function ProblemSet({fetchQuestions, isLoaded, match}) {
                     <Route exact path = {`${match.path}`}><ProblemSetWithSpinner paginate={paginate} page = {page} questionPerPage={questionPerPage} isLoading = {!isLoaded}/></Route>
                     <Route exact path = {`${match.path}/problem/:index`}><QuestionDetail/></Route>
                     <Route exact path = {`${match.path}/topicwise/:topic`}><TopicWiseQuestions/></Route>
-                    <Route path = "*" component = {Error404} />
+                    <Route path = "*" component = {Errorpage} />
                 </Switch>
             </div>
         </div>

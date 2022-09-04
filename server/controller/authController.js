@@ -25,18 +25,11 @@ const jwtToCookie = (user, status, res) => {
 
 const multerStorage = multer.diskStorage({
     destination: (req, file, cb) => {
-        console.log('I am running');
         cb(null, 'public/images/user/')
     },
     filename: (req, file, cb) => {
         const ext = file.mimetype.split('/')[1];
-        let name;
-        // console.log(req.body);
-        if(!req.user) {
-            name = req.username;
-        } else {
-            name = req.user.id;
-        }
+        let name = req.user.id;
         if(!name) {
             cb(new Err('Something went wrong', 400), false);
         }
@@ -56,18 +49,25 @@ const upload = multer({ storage: multerStorage, fileFilter: multerFilter });
 exports.updatePhoto = upload.single('photo');
 
 exports.updateMe = aEH(async (req, res, next) => {
-    console.log(req.body);
-    console.log(req.file);
     let username = req.body.username || req.user.username;
     let email = req.body.email || req.user.email;
-    let photo = req.file.filename || req.user.photo;
+    let photo;
+    if(req.file){
+        photo = req.file.filename;
+    }
+    if(!photo){
+        photo = req.user.photo
+    }
+    
     await User.findByIdAndUpdate(req.user.id, { email, username, photo });
     res.status(200).json({
+        photo: photo,
         status: 'success'
     });
 });
 
 exports.signUp = aEH(async (req, res, next) => {
+
     const { username, email, password, confirmPassword } = req.body;
     if(password !== confirmPassword) next(new Err('Passwords do not match',400));
     const newUser = await User.create({ username, password, email });
@@ -75,8 +75,8 @@ exports.signUp = aEH(async (req, res, next) => {
 });
 
 exports.logIn = aEH(async (req, res, next) => {
-    const { username, password } = req.body;
-    const user = await User.findOne({ username }).select('+password');
+    const { query, password } = req.body;
+    let user = await User.findOne({ username: query }).select('+password') || await User.findOne({ email: query }).select('+password');
     if(user && await bcrypt.compare(password, user.password)) jwtToCookie(user, 200, res);
     else next(new Err('Username or password invalid', 400));
 });

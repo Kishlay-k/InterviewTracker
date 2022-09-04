@@ -19,60 +19,62 @@ export const fetchStart = () => {
 }};
 
 export const login = (body,history) => {
-    console.log(body);
     return async dispatch => {
         dispatch(fetchStart());
         try {
             const res = await loginUser(body);
             dispatch(fetchSuccess(res.data.user));
-            console.log(history);
             history.replace('/problemset');
         } catch (err) {
-            console.log(err);
-            dispatch(fetchFail(err.message));
+            dispatch(fetchFail(err.response.data.message));
+            alert(err.response.data.message);
         }
     }
 };
 
 export const signup = (body, history) => {
-    console.log(body);
     return async dispatch => {
         dispatch(fetchStart());
         try {
             const res = await signupUser(body);
             dispatch(fetchSuccess(res.data.user));
-            console.log(history);
             history.replace('/problemset');
         } catch (err) {
-            console.log(err);
-            dispatch(fetchFail(err.message));
+            dispatch(fetchFail(err.response.data.message));
+            alert(err.response.data.message);
         }
     }
 };
+
+export const toggleSolvedAction = (id) =>({
+    type : types.TOGGLE_SOLVED,
+    payload :id
+});
 
 export const fetchUser = () => {
     return async dispatch => {
         dispatch(fetchStart());
         try {
             const res = await getUser();
-            console.log(res);
-            if(res.data.user === null){
-                console.log('hello');
-            }
-
             const user = res.data.user ? res.data.user : undefined;
             dispatch(fetchSuccess(user));
         } catch (err) {
-            console.log(err);
-            dispatch(fetchFail(err.message));
+            dispatch(fetchFail(err.response?.data.message));
+            alert(err.response?.data.message);
         }
     }
 };
 
 export const logoutUser = () =>{
-    console.log("fjdf");
     return async dispatch => {
         await logout();
         dispatch(fetchSuccess(null));
     }
 };
+
+export const updatePhoto = (data) => {
+    return {
+        type: types.UPDATE_PHOTO,
+        payload: data
+    }
+}

@@ -39,6 +39,13 @@ const problemSetSchema = mongoose.Schema({
     versionKey: false
 });
 
+problemSetSchema.pre(/^find/,function(next){
+    this.populate({
+        path:'list',
+    });
+    next();
+});
+
 const Problem = mongoose.model('problem', problemSchema);
 const ProblemSet = mongoose.model('problemSet', problemSetSchema);
 module.exports = { ProblemSet, Problem };

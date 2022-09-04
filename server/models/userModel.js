@@ -33,7 +33,7 @@ const userSchema = mongoose.Schema({
     }],
     problemsets: [{
         type: mongoose.Schema.ObjectId,
-        ref: 'problemset'
+        ref: 'problemSet'
     }],
     friends: [{
         type: mongoose.Schema.ObjectId,
@@ -49,6 +49,15 @@ const userSchema = mongoose.Schema({
     // }],
     versionKey: false
 });
+
+userSchema.pre(/^find/,function(next){
+    this.populate({
+        path:'problemsets',
+    });
+    next();
+});
+
+
 
 userSchema.pre('save', async function (next) {
     if(!this.isModified('password')) return next();
