@@ -1,14 +1,14 @@
 import React from 'react'
 import Question from '../../components/question/question';
-import { topicWiseProblemSet } from '../../redux/topicwise/topicwiseSelector';
-import { connect } from 'react-redux';
+import {topicWiseProblemSet} from '../../redux/topicwise/topicwiseSelector';
+import {connect} from 'react-redux';
 import TagsComponent from '../tagsComponent/tagsComponent';
 
 import './topicWiseComponent.scss'
 
 
 
-const TopicWiseComponent = ({ topicWiseProblemSet, topic }) => {
+const TopicWiseComponent = ({topicWiseProblemSet, topic}) => {
     return (
         <div className="d-flex justify-content-around flex-wrap mb-5">
             <div className = "topicwise">

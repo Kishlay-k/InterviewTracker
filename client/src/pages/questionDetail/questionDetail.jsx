@@ -20,7 +20,7 @@ function QuestionDetail({fetchQuestion,match,isLoadedQuestion}) {
 
         fetchQue(id);
 
-    },[fetchQuestion,id])
+    }, [fetchQuestion,id])
     return (
        <QuestionDetailWithSpinner isLoading = {!isLoadedQuestion}/>
     )

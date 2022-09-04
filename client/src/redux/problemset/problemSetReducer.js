@@ -14,7 +14,7 @@ const problemSetReducer = (state = INTIAL_STATE, action) => {
             isLoading: true,
         });
         case types.FETCH_SUCCESS: return({
-            ...state,
+            error: undefined,
             questions: action.payload,
             isLoading: false
         });

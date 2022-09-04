@@ -1,4 +1,4 @@
-import { getQuestions } from '../../api/index';
+import {getQuestions} from '../../api/index';
 import types from './actionType';
 
 export const fetchingSuccess = (data) => {

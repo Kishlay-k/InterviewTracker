@@ -1,20 +1,21 @@
 const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
-
 const cors = require('cors');
 const Err = require('./utility/error');
 const globalErrorHandler = require('./utility/globalErrorHandler');
-
-
 const authRoutes = require('./routes/authRoutes')
 const questionRoutes = require('./routes/questionRoutes')
 const userRoutes = require('./routes/userRoutes')
 const commentRoutes = require('./routes/commentRoutes');
 
 
-// Midlewares
+//Middlewares
 const app = express();
+app.use(cors({
+    origin: 'http://localhost:3000',
+    credentials: true, 
+})); 
 app.use(express.json());
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));

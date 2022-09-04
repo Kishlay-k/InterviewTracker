@@ -10,15 +10,16 @@ const jwtToCookie = (user, status, res) => {
     const token = jwt.sign({ id: user.id }, process.env.SECRETKEY);
     const cookieOptions = {
         expires: new Date(Date.now() + 90 * 24 * 60 * 60 * 1000),
-        httpOnly: true
+        // httpOnly: process.env.NODE_ENV === 'production' ? true : false,
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production' ? true : false
     };
     user.password = undefined;
-    if (process.env.NODE_ENV === 'production') cookieOptions.secure = true;
     res.cookie('jwt', token, cookieOptions);
     res.status(status).json({
         status: 'Success',
         token,
-        data: { user }
+        user 
     });
 }
 
@@ -68,7 +69,7 @@ exports.updateMe = aEH(async (req, res, next) => {
 
 exports.signUp = aEH(async (req, res, next) => {
     const { username, email, password, confirmPassword } = req.body;
-    if(password !== confirmPassword) next(new Err('Passwords do not match'));
+    if(password !== confirmPassword) next(new Err('Passwords do not match',400));
     const newUser = await User.create({ username, password, email });
     jwtToCookie(newUser, 201, res);
 });
@@ -90,7 +91,9 @@ exports.forgotPassword = aEH(async (req, res, next) => {
     user.passwordChangeToken = token;
     await user.save({ validateBeforeSave:false });
 
-    const link = `${req.protocol}://${req.get('host')}/api/v1/auth/resetpassword/${token}`;
+    // const link = `${req.protocol}://${req.get('host')}/api/v1/auth/resetpassword/${token}`;
+    const link = `${req.protocol}://localhost:3000/forgotpassword/token/${token}`;
+    console.log(link);
 
     try {
         const options = {
@@ -109,7 +112,6 @@ exports.forgotPassword = aEH(async (req, res, next) => {
         await user.save({ validateBeforeSave:false });
         return next(new Err('Something went wrong. Please try again later.', 500)); 
     }
-
 });
 
 exports.isLoggedIn = aEH(async (req, res, next) => {
@@ -143,9 +145,7 @@ exports.resetPassword = aEH(async (req,res,next)=>{
     const { newPassword, confirmNP } = req.body;
     if(newPassword !== confirmNP) next(new Err('Passwords do not match'), 400);
     console.log(req.params.token);
-
     const user = await User.findOne({ passwordChangeToken: req.params.token }).select('+passwordChangeToken');
-
     console.log(user);
 
 
@@ -164,4 +164,29 @@ exports.logOut = (req, res, next) => {
     res.status(200).json({
         messsage: 'Logged Out'
     });
-}
+};
+
+exports.getUser = async (req, res, next) => {
+    let token;
+    if(req.cookies.jwt) {
+        token = req.cookies.jwt;
+    }
+
+    let user = null;
+    let user1 = null;
+    if(token) {
+        try {
+            let jsonPayload = await jwt.verify(token, process.env.SECRETKEY); 
+            user1 = await User.findById(jsonPayload.id);
+        } catch(err){
+        }
+    }
+        
+    if(user1) {
+        user = user1;
+    }
+
+    res.status(200).json({
+        user,
+    });
+};
