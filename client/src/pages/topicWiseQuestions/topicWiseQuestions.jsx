@@ -16,7 +16,7 @@ const TopicWiseQuestions = ({fetchTopicwise, isLoaded, match}) => {
         fetchTopicWise(topic);
     }, [topic, fetchTopicwise]);
     return (
-        <TopicWiseWithSpinner isLoading={!isLoaded}/>
+        <TopicWiseWithSpinner isLoading={!isLoaded} topic = {topic}/>
     )
 }
 

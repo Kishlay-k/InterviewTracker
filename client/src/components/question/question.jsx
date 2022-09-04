@@ -11,16 +11,15 @@ function Question({ question, match }) {
     const colorChange2 = (e)=>{
         e.target.closest('li').style.background = '';
     }
-
  
     return (
         <li className= "list-group-item d-flex pt-1 pb-1" onMouseOver = {(e) => colorChange(e)} onMouseOut = {(e)=> colorChange2(e)}>
-            <div className ="pr-3" onMouseOver = {(e) => colorChange(e)} onMouseOut = {(e)=> colorChange2(e)} >{question.index}.</div>
+            <div className = "pr-3" onMouseOver = {(e) => colorChange(e)} onMouseOut = {(e)=> colorChange2(e)} >{question.index}.</div>
             <Link to ={`/problemset/problem/${question.index}`} style={{textDecoration: 'none'} }><div onMouseOver = {(e) => colorChange(e)} onMouseOut = {(e)=> colorChange2(e)}>
-                <div className="fw-bold">{ question.title }</div>
+                <div className="">{ question.title }</div>
             </div>
             </Link>
-            <span className="badge bg-light rounded-pill ml-auto" onMouseOver = {(e) => colorChange(e)} onMouseOut = {(e)=> colorChange2(e)}>{ question.comments?.length }</span>
+            <span className="badge rounded-pill ml-auto" onMouseOver = {(e) => colorChange(e)} onMouseOut = {(e)=> colorChange2(e)}>{ question.comments?.length }</span>
         </li>
     )
 }

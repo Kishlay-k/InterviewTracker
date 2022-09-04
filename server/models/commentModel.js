@@ -13,6 +13,10 @@ const commentSchema = mongoose.Schema({
         type: mongoose.Schema.ObjectId,
         ref: 'question'
     },
+    date:{
+        type: Date,
+        default: Date.now()
+    },
     versionKey: false
 },{
     toObject:{virtuals:true},
@@ -23,7 +27,7 @@ commentSchema.pre(/^find/,function(next){
     
     this.populate({
         path:'user',
-        select:'-solved -problemsets'
+        select:'-solved -problemsets -friendRequests -friends -email -__v'
     });
     
     next();

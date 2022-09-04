@@ -8,18 +8,18 @@ import './topicWiseComponent.scss'
 
 
 
-const TopicWiseComponent = ({ topicWiseProblemSet }) => {
+const TopicWiseComponent = ({ topicWiseProblemSet, topic }) => {
     return (
-        <div className="d-flex justify-content-around flex-wrap">
+        <div className="d-flex justify-content-around flex-wrap mb-5">
             <div className = "topicwise">
-
+                <h4>{topic}</h4>
                 <ol className="list-group">
-                    <li className="list-group-item d-flex align-items-start row">
-                            <div className = "col-1">#</div>
-                            <div>
-                                <div>Title</div>
-                            </div>
-                            <div className = "ml-auto">Comment</div>
+                    <li className="list-group-item d-flex">
+                        <div className="pr-4">#</div>
+                        <div>
+                            <div>Title</div>
+                        </div>
+                        <div className = "ml-auto">Comment</div>
                     </li>
                     {   topicWiseProblemSet?.map(e => 
                             <Question key={ e.id } question={ e }/>
