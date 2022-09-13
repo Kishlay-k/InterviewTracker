@@ -1,18 +1,18 @@
-import React,{useState} from 'react';
-import ObjectProblemsetListItem from './objectProblemsetListItem';
+import React from 'react';
+import { useLocation } from 'react-router-dom';
+import queryString from 'query-string';
+export default function ObjectProblemsetList({ list, index, func }) {
 
-export default function ObjectProblemsetList({list}) {
+    const loc = useLocation();
+    let val = queryString.parse(loc.search);
 
-    const [show , setShow]  = useState(false);
-    
+    const handleClick = () => {
+        func(list.name)
+    }
     return (
-        <div>
-            <li className="list-group-item d-flex justify-content-between align-items-center" style = {{cursor: 'pointer'}} onClick={(e) => setShow(state => !state)}>
-                {list.name}
-            </li>
-        {
-            show ? <ObjectProblemsetListItem key = {list._id} list = {list.list} /> : null
-        }
-        </div>
+        <tr>
+            <td className={`list-index ${val.problemset === list.name ? 'active' : ''}`}>{index}</td>
+            <td className={`list-name ${val.problemset === list.name ? 'active' : ''}`} onClick={handleClick}>{list.name}</td>
+        </tr>
     )
 }

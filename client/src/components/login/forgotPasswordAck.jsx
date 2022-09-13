@@ -1,9 +1,11 @@
-import React from 'react'
+import React from 'react';
+
+import './forgotPassword.scss';
 
 export default function ForgotPasswordAck() {
     return (
-        <div>
-            <h1>Succ</h1>
+        <div className="forgot-password-ack">
+            <h4>Email sent successfully, check your inbox.</h4>
         </div>
     )
 }

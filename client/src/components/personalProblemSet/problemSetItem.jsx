@@ -1,40 +1,55 @@
 /* eslint-disable no-unused-vars */
-import React, {useState} from 'react';
-import {deleteList} from '../../api/index';
-import {addAList} from '../../redux/user/userActions';
-import {connect} from 'react-redux';
-import {useHistory} from 'react-router-dom'
+import React, { useState } from 'react';
+import { deleteList } from '../../api/index';
+import { fetchUser } from '../../redux/user/userActions';
+import { connect } from 'react-redux';
+import { useLocation, useHistory } from 'react-router-dom';
+import queryString from 'query-string';
+import ModalWrapper from '../../components/modal/modal';
+import ConfirmRemoveCompoment from './../confirmRemoveForm/confirmRemoveCompoment';
 
+import './list.scss';
 
-function ProblemSetItem({el, func, addAList}) {
+const Modal = ModalWrapper(ConfirmRemoveCompoment);
+
+function ProblemSetItem({ el, func, fetchUser, index }) {
+
+    const loc = useLocation();
+    let val = queryString.parse(loc.search);
 
     const [deletelist, setdeletelist] = useState(false);
     const history = useHistory();
-    
-    const handleDeleteItem = async (el) => {
+
+    const [modalShow, setModalShow] = useState(false);
+    const hideModal = () => {
+        setModalShow(false);
+    }
+
+    const handleDeleteEle = async () => {
         try {
             const res = await deleteList(el._id);
             setdeletelist(e => !e);
-            addAList(res.data.problemsets);
-            history.push('/list?name=Favorite');
+            fetchUser();
+            hideModal();
+            history.push('/list?name=Favorites');
         } catch (err) {
             alert(err.response.data.message);
         }
     }
     return (
-        <div>
-            <li className="list-group-item d-flex justify-content-between align-items-center" style = {{cursor: 'pointer'}} onClick={(f) => func(el.name)}>
-                {el.name}
-                {
-                    el.name === 'Favorite' ? null : <button type="button" className="close" aria-label="Close"><span aria-hidden="true" onClick={e => handleDeleteItem(el)}>x</span></button>
-                }
-            </li>
-        </div>
+        <tr className="table-row">
+            <td className={`table-col problemset-index ${el.name === val.name ? 'active' : ''}`}>{index}</td>
+            <td className={`table-col problemset-name ${el.name === val.name ? 'active' : ''}`} onClick={(f) => func(el.name)}>{el.name}</td>
+            {
+                el.name === 'Favorites' ?  <td className="table-col problemset-remove-fav">Remove</td> : <td className="table-col problemset-remove" onClick={e => setModalShow(true)}>Remove</td>
+            }
+            <Modal onHide={() => setModalShow(false)} show={modalShow} handleDeleteEle={handleDeleteEle} hideModal={hideModal} />
+        </tr>
     )
 };
 
 const mapDispatchToProps = (dispatch) => ({
-    addAList: (data) => dispatch(addAList(data)),
+    fetchUser: () => dispatch(fetchUser())
 });
 
 export default connect(null, mapDispatchToProps)(ProblemSetItem);

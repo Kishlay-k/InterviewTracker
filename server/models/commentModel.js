@@ -13,25 +13,25 @@ const commentSchema = mongoose.Schema({
         type: mongoose.Schema.ObjectId,
         ref: 'question'
     },
-    date:{
-        type: Date,
-        default: Date.now()
+    date: {
+        type: Number,
+        default: new Date()
     },
     versionKey: false
-},{
-    toObject:{virtuals:true},
-    toJson:{virtuals:true}
+}, {
+    toObject: { virtuals: true },
+    toJson: { virtuals: true }
 });
 
-commentSchema.pre(/^find/,function(next){
-    
+commentSchema.pre(/^find/, function (next) {
+
     this.populate({
-        path:'user',
-        select:'-solved -problemsets -friendRequests -friends -email -__v'
+        path: 'user',
+        select: '-solved -problemsets -friendRequests -friends -email -__v'
     });
-    
+
     next();
-})
+});
 
 
 const Comment = mongoose.model('comment', commentSchema);

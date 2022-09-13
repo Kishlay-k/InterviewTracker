@@ -4,7 +4,7 @@ import PersonalProblemSetComponent from '../../components/personalProblemSet/per
 function PersonalProblemset() {
     return (
         <div>
-            <PersonalProblemSetComponent/>
+            <PersonalProblemSetComponent />
         </div>
     )
 };

@@ -1,14 +1,14 @@
-import React, {useEffect} from 'react'
-import {fetchTopicwise} from '../../redux/problemset/problemSetActions';
-import {isLoaded} from '../../redux/problemset/problemSetSelector';
+import React, { useEffect } from 'react'
+import { fetchTopicwise } from '../../redux/problemset/problemSetActions';
+import { isLoaded } from '../../redux/problemset/problemSetSelector';
 import WithSpinner from '../../components/withSpinner/withSpinner';
 import ProblemSetComponent from '../../components/problemSet/problemSetComponent';
-import {connect} from 'react-redux';
-import {withRouter} from 'react-router-dom';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 
 const ProblemSetWithSpinner = WithSpinner(ProblemSetComponent);
 
-const TopicWiseQuestions = ({fetchTopicwise, isLoaded, match}) => {
+const TopicWiseQuestions = ({ fetchTopicwise, isLoaded, match }) => {
     const topic = match.params.topic;
 
     useEffect(() => {
@@ -17,7 +17,7 @@ const TopicWiseQuestions = ({fetchTopicwise, isLoaded, match}) => {
     }, [topic, fetchTopicwise]);
 
     return (
-         <ProblemSetWithSpinner isLoading={!isLoaded} topic = {topic}/>
+        <ProblemSetWithSpinner isLoading={!isLoaded} topic={topic} />
     )
 }
 

@@ -50,28 +50,28 @@ const userSchema = mongoose.Schema({
     versionKey: false
 });
 
-userSchema.pre(/^find/,function(next) {
+userSchema.pre(/^find/, function (next) {
     this.populate({
-        path:'problemsets',
+        path: 'problemsets',
     });
 
     this.populate({
-        path:'friends',
+        path: 'friends',
         select: '-friends'
     });
 
     this.populate({
-        path:'friendRequests',
+        path: 'friendRequests',
         select: '-friendRequests'
     })
-    
+
     next();
 });
 
 
 
 userSchema.pre('save', async function (next) {
-    if(!this.isModified('password')) return next();
+    if (!this.isModified('password')) return next();
     this.password = await bcrypt.hash(this.password, 12);
     next();
 });

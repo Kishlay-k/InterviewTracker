@@ -1,28 +1,26 @@
-import React, {useState,useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import ListItem from './listItem';
-import {addProblems} from '../../api/index';
-import {addProblem} from '../../redux/user/userActions.js';
-import {connect} from 'react-redux';
+import { addProblems, handleTogglePP } from '../../api/index';
+import { connect } from 'react-redux';
 import NewListItemForm from './newListItemForm';
 import ModalWrapper from '../../components/modal/modal';
+import { fetchUser } from '../../redux/user/userActions';
 
 const Modal = ModalWrapper(NewListItemForm);
 
 
-function ProblemSetListComponent({playlist, addProblem}) {
+function ProblemSetListComponent({ playlist, fetchUser }) {
 
     const [modalShow, setModalShow] = useState(false);
-
     const [formdata, setformdata] = useState({
         title: '',
         topic: '',
         link: ''
     });
 
-
     useEffect(() => {
         setModalShow(false);
-    },[playlist]);
+    }, [playlist]);
 
     const handleChange = (e) => {
         setformdata({
@@ -31,50 +29,70 @@ function ProblemSetListComponent({playlist, addProblem}) {
         })
     }
 
-    const handleSubmit = async(e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         try {
             setModalShow(false);
             await addProblems(playlist._id, formdata);
-            addProblem(formdata, playlist._id);
+            fetchUser();
             setformdata({
                 title: '',
                 topic: '',
                 link: ''
             });
-           
-        } catch(err) {
+
+        } catch (err) {
             alert(err.response?.data?.message);
         }
-    }
+    };
 
-
+    const handleToggle = async (id) => {
+        try {
+            await handleTogglePP(id);
+            fetchUser();
+        } catch (err) {
+            console.error(err);
+        }
+    };
     return (
-        <div>
-            <h5>{playlist.name}</h5>
-            <ol className="list-group">
-            {
-                playlist?.list?.map((el, i) =>(
-                    <ListItem key = {i} el = {el} sid = {playlist._id} />
-                ))
-            }
-            </ol>
-
-            <div>
-                {
-                    modalShow ? null
-                    :
-                    <button className="btn btn-primary mt-3" onClick = {() => setModalShow(true)}>Add Problem</button>
-                }
-                <Modal onHide={() => setModalShow(false)} show = {modalShow} handleSubmit = {handleSubmit} handleChange = {handleChange} {...formdata}/>
+        <div className="list-item-wrapper">
+            <p className="playlist-name">{playlist.name}</p>
+            <div className="list-item">
+                <table className="list-item-table">
+                    <tbody>
+                        {
+                            playlist?.list?.map((el, i) => (
+                                <ListItem key={i} el={el} sid={playlist._id} index={i + 1} />
+                            ))
+                        }
+                    </tbody>
+                </table>
             </div>
+            <div className="buttons">
+                <div className="add-problem-button-container">
+                    {
+                        modalShow ? null :
+                            <button className="add-problem" onClick={() => setModalShow(true)}>Add Problem</button>
+                    }
+                    <Modal onHide={() => setModalShow(false)} show={modalShow} handleSubmit={handleSubmit} handleChange={handleChange} {...formdata} />
+                </div>
+                <div className="toggle-public-container">
+                    {
+                        playlist.public ?
+                            <button className="public-button" onClick={() => handleToggle(playlist._id)}>Public</button> :
+                            <button className="private-button" onClick={() => handleToggle(playlist._id)}>Private</button>
+                    }
+                </div>
+            </div>
+
         </div>
     )
 };
 
-const mapDispatchToProps = (dispatch) =>({
-    addProblem: (data, id) => dispatch(addProblem(data,id)),
+const mapDispatchToProps = (dispatch) => ({
+    fetchUser: () => dispatch(fetchUser()),
 });
 
 
-export  default connect(null, mapDispatchToProps)(ProblemSetListComponent);
+
+export default connect(null, mapDispatchToProps)(ProblemSetListComponent);

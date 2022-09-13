@@ -1,39 +1,48 @@
 import React from 'react';
-import {getUserSelector} from '../../redux/user/userSelector';
-import {connect} from 'react-redux';
+import { getUserSelector } from '../../redux/user/userSelector';
+import { connect } from 'react-redux';
 import FriendComponent from './friendComponent';
 import FriendRequestComponent from './friendRequestComponent';
+import SearchUser from './searchUser';
+import './friendPage.scss';
 
-function FriendListComponent({user}) {
+function FriendListComponent({ user }) {
     return (
-        <div className = "justify-content-around d-flex">
-            <div className="mr-2 ml-2 w-25">
-                <h6>My friends</h6>
-                <ol className="list-group">
-                    {
-                        user?.friends.map(e => 
-                            <FriendComponent key = {e._id} object = {e} />
-                        )
-                    }
-                </ol>
-            </div>
+        <div className="wrapper1">
+            <SearchUser />
+            <div className="friends-container">
+                <div className="friends">
+                    <h6 className="heading">Friends</h6>
+                    <table className="friendItem">
+                        <tbody>
+                            {
+                                user?.friends.map((e, i) =>
+                                    <FriendComponent key={e._id} object={e} index={i + 1} />
+                                )
+                            }
+                        </tbody>
+                    </table>
+                </div>
 
-            <div className="mr-2 ml-2 w-25">
-                <h6>Friend Requests</h6>
-                <ol className="list-group">
-                    {
-                        user?.friendRequests.map(e => 
-                            <FriendRequestComponent key = {e._id} object = {e} />
-                        )
-                    }
-                </ol>
+                <div className="friendRequest">
+                    <h6 className="heading">Friend Requests</h6>
+                    <table className="friendRequestItem">
+                        <tbody>
+                            {
+                                user?.friendRequests.map((e, i) =>
+                                    <FriendRequestComponent key={e._id} object={e} index={i + 1} />
+                                )
+                            }
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     )
 };
 
-const mapStateToProps = (state) =>({
-    user : getUserSelector(state),
+const mapStateToProps = (state) => ({
+    user: getUserSelector(state),
 });
 
 export default connect(mapStateToProps)(FriendListComponent);

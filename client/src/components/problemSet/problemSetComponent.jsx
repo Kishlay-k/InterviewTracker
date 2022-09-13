@@ -2,49 +2,46 @@
 import React from 'react'
 import Question from '../../components/question/question';
 import Page from '../../components/pagination/pagination';
-import {problemset} from '../../redux/problemset/problemSetSelector';
-import {getUserSelector} from '../../redux/user/userSelector';
-import {connect} from 'react-redux';
+import { problemset } from '../../redux/problemset/problemSetSelector';
+import { getUserSelector } from '../../redux/user/userSelector';
+import { connect } from 'react-redux';
 import TagsComponent from '../tagsComponent/tagsComponent';
 
 import './problemSetComponent.scss'
 
-const ProblemSetComponent = ({ questionPerPage, paginate, page, problemset,user,topic}) => {
-    const tp = topic || "All Questions";
+const ProblemSetComponent = ({ questionPerPage, paginate, page, problemset, user, topic }) => {
     return (
-        <div className="d-flex justify-content-around flex-wrap">
-            <div className = "problemset">
-                <h6>{tp}</h6>
-                <ol className="list-group">
-                    <li className="list-group-item d-flex">
-                        <div className="pr-4">#</div>
-                        <div>
-                            <div>Title</div>
-                        </div>
+        <div className="contain">
+            <div className="problemset">
+                <table className="table1">
+                    <thead>
+                        <tr>
+                            <th className="col1">#</th>
+                            <th className="col2">Title</th>
+                            {user ? <th className="col31">Solved?</th> : null}
+                        </tr>
+                    </thead>
+                    <tbody>
                         {
-                            user ? <div className = "ml-auto">Solved</div> : null
+                            problemset?.map(e => {
+                                let checked = user?.solved.find(el => el == e.id);
+                                return <Question key={e.id} question={e} checked={checked} />
+                            })
                         }
-                    </li>
-                    {   
-                        problemset?.map(e => {
-                            let checked = user?.solved.find(el => el == e.id);
-                            return <Question key={ e.id } question={ e } checked = {checked}/>
-                        })
-                    }
-                </ol>
+                    </tbody>
+                </table>
                 <div className="pagination">
-                {
-                    questionPerPage ? 
-                        <div>
-                            <Page items ={450/questionPerPage} paginate = {paginate} page = {page}/>
-                        </div>
-                    : 
-                        null
-                }
+                    {
+                        questionPerPage ?
+                            <div>
+                                <Page items={450 / questionPerPage} paginate={paginate} page={page} />
+                            </div>
+                            :
+                            null
+                    }
                 </div>
-                
             </div>
-            <TagsComponent/>
+            <TagsComponent />
         </div>
     )
 };

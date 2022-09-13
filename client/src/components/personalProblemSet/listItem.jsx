@@ -1,34 +1,44 @@
-import React from 'react';
-import {deleteListItem} from '../../api/index';
-import {addAList} from '../../redux/user/userActions';
-import {connect} from 'react-redux';
+import React, { useState } from 'react';
+import { deleteListItem } from '../../api/index';
+import { fetchUser } from '../../redux/user/userActions';
+import { connect } from 'react-redux';
+import ModalWrapper from '../../components/modal/modal';
+import ConfirmRemoveCompoment from './../confirmRemoveForm/confirmRemoveCompoment';
 
-function ListItem({el, sid, addAList}) {
+const Modal = ModalWrapper(ConfirmRemoveCompoment);
 
-    const handleDeleteEle = async(el) => {
+function ListItem({ el, sid, fetchUser, index }) {
+
+    const [modalShow, setModalShow] = useState(false);
+
+    const hideModal = () => {
+        setModalShow(false);
+    }
+
+    const handleDeleteEle = async () => {
+        console.log(sid, el._id);
         try {
-            const data = {sid: sid};
-            console.log(data);
-            const res = await deleteListItem(el._id, data);
-            console.log(res);
-            addAList(res.data.problemsets);
+            const data = { sid: sid };
+            await deleteListItem(el._id, data);
+            fetchUser();
+            hideModal();
         } catch (err) {
             alert(err.response.data.message);
         }
     }
 
     return (
-        <div>
-            <li className="list-group-item d-flex justify-content-between align-items-center pt-1 pb-1" style = {{cursor: 'pointer'}}>
-                <a href = {el.link} target = "_blank" rel="noreferrer" style = {{textDecoration:'none'}}>{el.title}</a>
-                <button type="button" className="close" aria-label="Close"><span aria-hidden="true" onClick={e => handleDeleteEle(el)}>x</span></button>
-            </li>
-        </div>
+        <tr className="table-row">
+            <td className="table-col list-index">{index}</td>
+            <td className="table-col list-name"><a href={el.link} target="_blank" rel="noreferrer" className="list-title">{el.title}</a></td>
+            <td className="table-col list-item-remove" onClick={() => setModalShow(true)}>Remove</td>
+            <Modal onHide={() => setModalShow(false)} show={modalShow} handleDeleteEle={handleDeleteEle} hideModal={hideModal} />
+        </tr>
     )
 }
 
 const mapDispatchToProps = (dispatch) => ({
-    addAList: (data) => dispatch(addAList(data)),
+    fetchUser: () => dispatch(fetchUser())
 });
 
 export default connect(null, mapDispatchToProps)(ListItem);

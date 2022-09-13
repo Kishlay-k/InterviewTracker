@@ -13,9 +13,10 @@ const commentRoutes = require('./routes/commentRoutes');
 //Middlewares
 const app = express();
 app.use(cors({
-    origin: 'http://localhost:3000',
-    credentials: true, 
-})); 
+    origin: ["http://localhost:3000"],
+    credentials: true,
+}));
+
 app.use(express.json());
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
@@ -25,7 +26,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/api/v1/problemset', questionRoutes);
 app.use('/api/v1/auth', authRoutes);
 app.use('/api/v1/user', userRoutes);
-app.use('/api/v1/comments',commentRoutes);
+app.use('/api/v1/comments', commentRoutes);
 app.use('*', (req, res, next) => {
     next(new Err("There is nothing for you here >_<", 404));
 });

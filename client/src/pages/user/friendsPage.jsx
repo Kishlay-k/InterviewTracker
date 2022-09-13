@@ -1,14 +1,14 @@
 import React from 'react';
 import FriendListComponent from '../../components/friend/friendListComponent';
-import {Switch,Route,useRouteMatch} from 'react-router-dom';
-import Errorpage from '../errorpage';
+import { Switch, Route, useRouteMatch } from 'react-router-dom';
+import Errorpage from '../error/errorpage';
 
-function FriendsPage () {
+function FriendsPage() {
     const match = useRouteMatch();
-    return(
+    return (
         <Switch>
-            <Route exact path = {`${match.path}`}><FriendListComponent/></Route>
-            <Route path = "*" component = {Errorpage} />
+            <Route exact path={`${match.path}`}><FriendListComponent /></Route>
+            <Route path="*" component={Errorpage} />
         </Switch>
     )
 };

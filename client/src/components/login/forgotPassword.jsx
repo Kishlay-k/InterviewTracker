@@ -1,8 +1,9 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import Form from '../form/formComponent';
-import {useHistory, useLocation} from 'react-router-dom';
-import {forgotPassword} from '../../api/index';
+import { useHistory, useLocation } from 'react-router-dom';
+import { forgotPassword } from '../../api/index';
 
+import './forgotPassword.scss';
 
 export default function ForgotPassword() {
 
@@ -10,15 +11,15 @@ export default function ForgotPassword() {
     const location = useLocation();
     const [state, setState] = useState(false);
 
-    const [data,setData] = useState({
+    const [data, setData] = useState({
         email: ''
     });
 
-    const handleChange = (e)=>{
-        setData({...data, [e.target.name]: e.target.value})
+    const handleChange = (e) => {
+        setData({ ...data, [e.target.name]: e.target.value })
     };
 
-    const handleSubmit = async(e)=>{
+    const handleSubmit = async (e) => {
         e.preventDefault();
         setState(e => !e);
         try {
@@ -28,26 +29,25 @@ export default function ForgotPassword() {
             setState(e => !e);
             alert(err.message);
         }
-        
+
     };
-    
+
     return (
-        <div>
+        <div className="forgot-password">
             {
                 state ?
-                    <h2 className="m-auto">Yamette Kudasai!!</h2>
-                :
+                    <h4 className="">Email is being sent, please wait...</h4> :
                     <div>
-                        <h2 className = "m-auto">Password Reset</h2>
-                        <div className = "form">
-                            <form onSubmit = {handleSubmit}>
-                                <Form name = "email" type = "email" value = {data.email} id = "#email" required = {true} handleChange = {handleChange} label = "Email" />
-                                <button className = "btn btn-primary btn-sm" type = "submit">Submit</button>
+                        <h3 className="m-auto">Password Reset</h3>
+                        <div className="form">
+                            <form onSubmit={handleSubmit}>
+                                <Form name="email" type="email" value={data.email} id="#email" required={true} handleChange={handleChange} label="Email" />
+                                <button className="button" type="submit">Submit</button>
                             </form>
                         </div>
                     </div>
             }
-            
+
         </div>
     )
 }
