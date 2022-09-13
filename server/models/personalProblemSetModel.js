@@ -19,7 +19,7 @@ const problemSchema = mongoose.Schema({
 const problemSetSchema = mongoose.Schema({
     name: {
         type: String,
-        required: [true, 'Enter Name'],
+        required: [true, 'Enter Name'], 
     },
     public: {
         type: Boolean,
@@ -39,9 +39,9 @@ const problemSetSchema = mongoose.Schema({
     versionKey: false
 });
 
-problemSetSchema.pre(/^find/, function (next) {
+problemSetSchema.pre(/^find/,function(next){
     this.populate({
-        path: 'list',
+        path:'list',
     });
     next();
 });

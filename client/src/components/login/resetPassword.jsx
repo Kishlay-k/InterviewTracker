@@ -1,13 +1,15 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import Form from '../form/formComponent';
-import { useParams, useHistory } from 'react-router-dom';
-import { resetPassword, changePassword } from '../../api/index.js';
+import {useParams, useHistory} from 'react-router-dom';
+import {resetPassword,changePassword} from '../../api/index.js';
 
 import './resetPassword.scss'
 
 export default function ResetPassword() {
-    const { token } = useParams();
+    const {token} = useParams();
     const history = useHistory();
+
+    //console.log(token,user);
 
     const [state, setstate] = useState({
         newPassword: '',
@@ -15,11 +17,11 @@ export default function ResetPassword() {
         currPassword: ''
     });
 
-    const handleChange = (e) => {
-        setstate({ ...state, [e.target.name]: e.target.value })
+    const handleChange = (e)=>{
+        setstate({...state, [e.target.name]: e.target.value})
     };
 
-    const handleSubmit = async (e) => {
+    const handleSubmit = async(e)=>{
         e.preventDefault();
         try {
             const res = await resetPassword(token, state);
@@ -30,7 +32,7 @@ export default function ResetPassword() {
         }
     };
 
-    const handleSubmit1 = async (e) => {
+    const handleSubmit1 = async(e) => {
         e.preventDefault();
         try {
             const res = await changePassword(state);
@@ -46,20 +48,23 @@ export default function ResetPassword() {
         <div className="reset-password">
 
             {
-                token ?
-                    <form className="m-auto form-class" onSubmit={handleSubmit} >
-                        <Form name="newPassword" value={state.newPassword} type="password" id="#password" required={true} handleChange={handleChange} label="New Password" />
-                        <Form name="confirmNP" value={state.confirmNP} type="password" id="#confirmPassword" required={true} handleChange={handleChange} label="Confirm Password" />
-                        <button className="button" type="submit">Submit</button>
+                token ? 
+                    <form className = "m-auto" onSubmit = {handleSubmit} >
+                        <Form  name = "newPassword" value = {state.newPassword} type = "password" id = "#password" required = {true} handleChange = {handleChange} label = "New Password" />
+                        <Form  name = "confirmNP" value = {state.confirmNP} type = "password" id = "#confirmPassword" required = {true} handleChange = {handleChange} label = "Confirm Password" />
+                        <button className = "button" type = "submit">Submit</button> 
                     </form>
-                    :
-                    <form className="m-auto form-class" onSubmit={handleSubmit1} >
-                        <Form name="currPassword" value={state.currPassword} type="password" id="#currPassword" required={true} handleChange={handleChange} label="Current Password" />
-                        <Form name="newPassword" value={state.newPassword} type="password" id="#password" required={true} handleChange={handleChange} label="New Password" />
-                        <Form name="confirmNP" value={state.confirmNP} type="password" id="#confirmPassword" required={true} handleChange={handleChange} label="Confirm Password" />
-                        <button className="button" type="submit">Submit</button>
+                :
+                    <form className = "m-auto" onSubmit = {handleSubmit1} >
+                        <Form  name = "currPassword" value = {state.currPassword} type = "password" id = "#currPassword" required = {true} handleChange = {handleChange} label = "Current Password" />
+                        <Form  name = "newPassword" value = {state.newPassword} type = "password" id = "#password" required = {true} handleChange = {handleChange} label = "New Password" />
+                        <Form  name = "confirmNP" value = {state.confirmNP} type = "password" id = "#confirmPassword" required = {true} handleChange = {handleChange} label = "Confirm Password" />
+                        <button className = "button" type = "submit">Submit</button> 
                     </form>
             }
+
+
+
         </div>
     )
 }

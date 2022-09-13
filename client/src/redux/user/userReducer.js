@@ -1,7 +1,7 @@
 /* eslint-disable eqeqeq */
 import types from "./types";
 
-const addProblem = (user, { data, id }) => {
+const addProblem = (user, {data, id}) => {
     let problemsets = user.problemsets;
     let playlist = problemsets.find(el => el._id == id);
     playlist.list.push(data);
@@ -15,30 +15,30 @@ const INITIAL_STATE = {
     error: undefined
 };
 
-const userReducer = (state = INITIAL_STATE, action) => {
-    switch (action.type) {
-        case types.FETCHING_START: return ({
+const userReducer = (state = INITIAL_STATE, action) =>{
+    switch(action.type){
+        case types.FETCHING_START : return({
             ...state,
             isLoading: true
         })
-        case types.FETCH_SUCCESS: return ({
+        case types.FETCH_SUCCESS: return({
             error: undefined,
             user: action.payload,
             isLoading: false
         })
-        case types.FETCH_FAIL: return ({
+        case types.FETCH_FAIL : return({
             ...state,
             isLoading: false,
             user: null,
             error: action.payload
         })
-        case types.ADD_PROBLEM: return ({
+        case types.ADD_PROBLEM : return({
             ...state,
             user: addProblem(state.user, action.payload)
         })
-        default: return ({
+        default : return ({
             ...state
         })
     }
 };
-export default userReducer;
+export default  userReducer;

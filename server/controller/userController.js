@@ -15,7 +15,7 @@ exports.getAllUsers = aEH(async (req, res, next) => {
 
 exports.getUser = aEH(async (req, res, next) => {
     let user = await User.findOne({ username: req.params.username });
-    if (!user) return next(new Err('User does not exist', 400));
+    if(!user) return next(new Err('User does not exist', 400));
     res.status(200).json({
         status: 'success',
         user
@@ -25,7 +25,7 @@ exports.getUser = aEH(async (req, res, next) => {
 exports.updateSolved = aEH(async (req, res, next) => {
     let qid = req.params.questionid;
     const question = await Question.findById(qid);
-    if (!question) {
+    if(!question) {
         return next(new Err('Invalid Question ID', 400));
     }
     let solved = req.user.solved;
@@ -34,7 +34,7 @@ exports.updateSolved = aEH(async (req, res, next) => {
     } else {
         solved.push(qid);
     }
-    await User.findByIdAndUpdate(req.user.id, { solved });
+    await User.findByIdAndUpdate(req.user.id, {solved} );
     res.status(200).json({
         status: 'success'
     });
@@ -42,12 +42,12 @@ exports.updateSolved = aEH(async (req, res, next) => {
 
 exports.createProblemSet = aEH(async (req, res, next) => {
     const { name, public, description } = req.body;
-    if (!name) return next(new Err('Enter Name', 400));
+    if(!name) return next(new Err('Enter Name', 400));
     const user = req.user;
     const problemSet = await ProblemSet.create({ name, public, description });
     let arr = user.problemsets || [];
     arr.push(problemSet.id);
-    const updatedProblemSet = await User.findByIdAndUpdate(user.id, { problemsets: arr }, { new: true },).populate('problemsets');
+    const updatedProblemSet = await User.findByIdAndUpdate(user.id, { problemsets: arr} , {new: true},).populate('problemsets');
     res.status(200).json({
         status: 'success',
         updatedProblemSet
@@ -57,12 +57,12 @@ exports.createProblemSet = aEH(async (req, res, next) => {
 exports.addToProblemSet = aEH(async (req, res, next) => {
     const id = req.params.id;
     const { title, topic, link, description } = req.body;
-    if (!link) return next(new Err('Enter Link', 400));
+    if(!link) return next(new Err('Enter Link', 400));
     const problemSet = await ProblemSet.findById(id);
     const problem = await Problem.create({ title, topic, link, description });
     let arr = problemSet.list || [];
     arr.push(problem.id);
-    await ProblemSet.findByIdAndUpdate(id, { list: arr });
+    await ProblemSet.findByIdAndUpdate(id, { list: arr});
     res.status(200).json({
         status: 'success',
         problem
@@ -71,16 +71,16 @@ exports.addToProblemSet = aEH(async (req, res, next) => {
 
 exports.friendRequests = aEH(async (req, res, next) => {
     const { action } = req.body;
-    if (action !== 'accept' && action !== 'reject') next(new Err('Invalid Action', 400));
+    if(action !== 'accept' && action !== 'reject') next(new Err('Invalid Action', 400));
     let friendReq = req.user.friendRequests;
     let friends = req.user.friends;
-    if (action === 'accept') {
+    if(action === 'accept') {
         friends.push(req.params.id);
         let user2 = await User.findById(req.params.id);
-        if (!user2) next(new Err('User does not exist', 400));
+        if(!user2) next(new Err('User does not exist', 400));
         await User.findByIdAndUpdate(req.params.id, { friends: [...user2.friends, req.user.id] });
     }
-    friendReq = friendReq.filter(e => e._id != req.params.id);
+    friendReq = friendReq.filter(e => e._id !=req.params.id);
     await User.findByIdAndUpdate(req.user.id, { friends, friendRequests: friendReq });
     res.status(200).json({
         status: 'success',
@@ -89,10 +89,10 @@ exports.friendRequests = aEH(async (req, res, next) => {
 
 exports.addFriend = aEH(async (req, res, next) => {
     const user = await User.findById(req.params.id);
-    if (!user) next(new Err('User does not exist', 400));
+    if(!user) next(new Err('User does not exist', 400));
     let friendReq = user.friendRequests;
-    if (friendReq.find(e => e._id == req.user.id)) friendReq = friendReq.filter(e => e._id != req.user.id);
-    else friendReq.push(req.user.id);
+    if(friendReq.find(e => e._id == req.user.id)) friendReq = friendReq.filter(e => e._id != req.user.id);
+    else friendReq.push(req.user.id); 
     await User.findByIdAndUpdate(req.params.id, { friendRequests: friendReq });
     res.status(200).json({
         status: 'success'
@@ -106,25 +106,25 @@ exports.removeFriend = aEH(async (req, res, next) => {
     let user2 = await User.findById(id2);
     let friends1 = user1.friends;
     let friends2 = user2.friends;
-    friends1 = friends1.filter(e => e._id != id2);
-    friends2 = friends2.filter(e => e._id != id1);
-    const user = await User.findByIdAndUpdate(id1, { friends: friends1 }, { new: true });
+    friends1 = friends1.filter(e => e._id!=id2);
+    friends2 = friends2.filter(e => e._id!=id1);
+    const user = await User.findByIdAndUpdate(id1, { friends: friends1 }, {new: true});   
     await User.findByIdAndUpdate(id2, { friends: friends2 });
     res.status(200).json({
         status: 'success',
-        friends: user.friends
+        friends :user.friends
     });
 });
 
-exports.addToFavorite = aEH(async (req, res, next) => {
-    const { link, title, topic } = req.body;
-    const newProblem = await Problem.create({ link, title, topic });
+exports.addToFavorite =  aEH(async (req, res, next) => {
+    const {link,title,topic} = req.body;
+    const newProblem = await Problem.create({link,title,topic});
     const user = req.user;
     let problemsets = user.problemsets;
-    let arr = problemsets.find(el => el.name === 'Favorites');
+    let arr = problemsets.find(el => el.name === 'Favorite');
     const id = newProblem.id;
     arr.list.push(id);
-    const problemset = await ProblemSet.findByIdAndUpdate(arr.id, { list: arr.list }, { new: true });
+    const problemset = await ProblemSet.findByIdAndUpdate(arr.id,{list:arr.list},{new: true});
 
     const usr = await User.findById(user.id);
 
@@ -147,7 +147,7 @@ exports.deleteList = aEH(async (req, res, next) => {
     const usr = await User.findById(req.user.id);
     let problemsets = req.user.problemsets;
     problemsets = problemsets.filter(e => e._id != id);
-    const user = await User.findByIdAndUpdate(req.user.id, { problemsets }, { new: true });
+    const user = await User.findByIdAndUpdate(req.user.id, {problemsets}, {new: true});
     res.status(200).json({
         problemsets: usr.problemsets
     })
@@ -155,11 +155,11 @@ exports.deleteList = aEH(async (req, res, next) => {
 
 exports.deleteListItem = aEH(async (req, res, next) => {
     const pid = req.params.id;
-    const { sid } = req.body;
+    const {sid} = req.body;
 
     let problemset = await ProblemSet.findById(sid);
     problemsetList = problemset.list.filter(e => e._id != pid);
-    const temp = await ProblemSet.findByIdAndUpdate(sid, { list: problemsetList }, { new: true });
+    const temp = await ProblemSet.findByIdAndUpdate(sid, {list: problemsetList}, {new: true});
     await Problem.findByIdAndDelete(pid);
     const usr = await User.findById(req.user.id);
     req.user = usr;
@@ -173,16 +173,16 @@ exports.cancelFriendRequest = aEH(async (req, res, next) => {
     const user = await User.findById(req.params.id);
     let friendRequests = user.friendRequests;
     friendRequests = friendRequests.filter(e => e._id != req.user.id);
-    await User.findByIdAndUpdate(user._id, { friendRequests });
+    await User.findByIdAndUpdate(user._id, {friendRequests});
     res.status(200).json({
         status: 'success'
     })
-});
+}); 
 
 exports.togglepp = aEH(async (req, res, next) => {
     let problemset = await ProblemSet.findById(req.params.id);
     problemset.public = !problemset.public;
-    await ProblemSet.findByIdAndUpdate(req.params.id, { public: problemset.public });
+    await ProblemSet.findByIdAndUpdate(req.params.id,{public:problemset.public});
     res.status(200).json({
         status: 'success'
     })

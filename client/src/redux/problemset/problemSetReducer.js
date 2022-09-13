@@ -7,17 +7,18 @@ const INTIAL_STATE = {
 }
 
 const problemSetReducer = (state = INTIAL_STATE, action) => {
-    switch (action.type) {
-        case types.FETCHING_START: return ({
+    switch(action.type)
+    {
+        case types.FETCHING_START: return({
             ...state,
             isLoading: true,
         });
-        case types.FETCH_SUCCESS: return ({
+        case types.FETCH_SUCCESS: return({
             error: undefined,
             questions: action.payload,
             isLoading: false
         });
-        case types.FETCH_FAIL: return ({
+        case types.FETCH_FAIL: return({
             ...state,
             error: action.payload,
             isLoading: false,

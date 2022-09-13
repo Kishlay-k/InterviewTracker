@@ -1,27 +1,24 @@
-import { loginUser, getUser, logout, signupUser } from '../../api/index';
+import {loginUser, getUser, logout, signupUser} from '../../api/index';
 import types from './types';
 
 export const fetchSuccess = (data) => {
     return {
-        payload: data,
-        type: types.FETCH_SUCCESS
-    }
-};
+    payload: data,
+    type: types.FETCH_SUCCESS
+}};
 
 export const fetchFail = (err) => {
     return {
-        payload: err,
-        type: types.FETCH_FAIL
-    }
-};
+    payload: err,
+    type: types.FETCH_FAIL
+}};
 
 export const fetchStart = () => {
     return {
-        type: types.FETCHING_START
-    }
-};
+    type: types.FETCHING_START
+}};
 
-export const login = (body, history) => {
+export const login = (body,history) => {
     return async dispatch => {
         dispatch(fetchStart());
         try {
@@ -49,9 +46,9 @@ export const signup = (body, history) => {
     }
 };
 
-export const toggleSolvedAction = (id) => ({
-    type: types.TOGGLE_SOLVED,
-    payload: id
+export const toggleSolvedAction = (id) =>({
+    type : types.TOGGLE_SOLVED,
+    payload :id
 });
 
 export const fetchUser = () => {
@@ -63,12 +60,12 @@ export const fetchUser = () => {
             dispatch(fetchSuccess(user));
         } catch (err) {
             dispatch(fetchFail(err.response?.data.message));
-            alert(err.response?.data.message ? err.response.data.message : 'Website is under maintainence');
+            alert(err.response?.data.message);
         }
     }
 };
 
-export const logoutUser = () => {
+export const logoutUser = () =>{
     return async dispatch => {
         await logout();
         dispatch(fetchSuccess(null));
@@ -85,7 +82,7 @@ export const updatePhoto = (data) => {
 export const addProblem = (data, id) => {
     return {
         type: types.ADD_PROBLEM,
-        payload: { data, id }
+        payload: {data, id}
     }
 };
 

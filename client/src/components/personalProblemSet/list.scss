@@ -1,38 +1,46 @@
 .personal-problemset {
-	color: #d4d4d4;
-	margin-top: 1%;
+    color: #d4d4d4;
+    margin-top: 1%;
+    
 
-	.problemset-container {
-		display: flex;
-		margin: 5% 5% 0% 10%;
+    .problemset-container {
+        display: flex;
+        margin: 5% 10% 0% 10%;
 
-		.playlists {
-			width: 30%;
-			margin-left: 5%;
-			margin-right: 5%;
-			background-color: #121212;
-			font-size: medium;
+        .playlists{
+            width: 30%;
+            margin-left: 5%;
+            margin-right: 30%;
+            background-color: #121212;
+            font-size: medium;
 
-			.problemset-item {
-				width: 20rem;
-				display: flex;
+            .problemset-item {
+                width: 20rem;
+                display: flex;
 
-				.problemset-name {
-					width: 100%;
-				}
+                .problemset-name {
+                    width: 100%;
+                    // padding-top: 10px;
+                }
 
-				.arrow {
-					color: #121212;
-					padding-right: 6px;
-				}
-				.active {
-					color: rgba(25, 130, 196, 1);
-				}
+                .arrow {
+                    color: #121212;
+                    padding-right: 6px;
+                }
+                .active {
+                    color: rgba(25,130,196,1);
+                }
 
-				.close {
-					color: #d4d4d4;
-				}
-			}
-		}
-	}
+                .close {
+                    color: #d4d4d4;
+                }
+            }
+        }
+        
+        .list{
+            width:30%;
+            margin-right: 5%;
+        }
+    }
+    
 }

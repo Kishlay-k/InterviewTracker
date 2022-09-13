@@ -13,9 +13,9 @@ const validationErr = (err) => {
     let message = '';
     errors.forEach(el => {
         if (el.startsWith("Path `password`")) {
-            message = message + (message === '' ? '' : '\n') + 'Password is shorter than minimum allowed length (8)';
+            message = message + (message===''? '' : '\n') + 'Password is shorter than minimum allowed length (8)';
         } else {
-            message = message + (message === '' ? '' : '\n') + el;
+            message = message + (message===''? '' : '\n') + el;
         }
     });
     const error = new Err(message, 400);

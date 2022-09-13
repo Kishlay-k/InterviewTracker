@@ -31,7 +31,7 @@ const multerStorage = multer.diskStorage({
         const ext = file.mimetype.split("/")[1];
         let name = req.user.id;
         if (!name) {
-            cb(new Err("Something went wrong", 400), false);
+        cb(new Err("Something went wrong", 400), false);
         }
         cb(null, `${name}_${Date.now()}.${ext}`);
     },
@@ -70,7 +70,7 @@ exports.signUp = aEH(async (req, res, next) => {
     const { username, email, password, confirmPassword } = req.body;
     if (password !== confirmPassword)
         next(new Err("Passwords do not match", 400));
-    const list = await ProblemSet.create({ name: "Favorites" });
+    const list = await ProblemSet.create({ name: "Favorite" });
     let list1 = [];
     list1.push(list.id);
     const newUser = await User.create({
@@ -110,14 +110,14 @@ exports.forgotPassword = aEH(async (req, res, next) => {
 
     try {
         const options = {
-            email: user.email,
-            subject: "Reset Password link",
-            message: `Click <a href = "${link}">here</a> to reset your Interview Tracker account password. <br> Ignore if you didn't request a password change.`,
+        email: user.email,
+        subject: "Reset Password link",
+        message: `Click <a href = "${link}">here</a> to reset your Interview Tracker account password. <br> Ignore if you did'nt request a password change.`,
         };
         await sendEmail(options);
         res.status(200).json({
-            status: "success",
-            message: "Mail sent",
+        status: "success",
+        message: "Mail sent",
         });
     } catch (err) {
         user.passwordChangeToken = undefined;
@@ -136,7 +136,7 @@ exports.isLoggedIn = aEH(async (req, res, next) => {
     } else if (req.cookies.jwt) {
         token = req.cookies.jwt;
     }
-    if (!token) return next(new Err("Not logged in"), 400);
+    if (!token) return next(new Err("Not Logged In"), 400);
     let jsonPayload = await jwt.verify(token, process.env.SECRETKEY);
     const user = await User.findById(jsonPayload.id);
     if (!user) return next(new Err("User does not exist", 400));
@@ -149,7 +149,7 @@ exports.changePassword = aEH(async (req, res, next) => {
     if (newPassword !== confirmNP) next(new Err("Passwords do not match"), 400);
     const user = await User.findById(req.user.id).select("+password");
     if (await bcrypt.compare(newPassword, user.password))
-        next(new Err("New password cannot be old password"), 400);
+        next(new Err("New Password cannot be Old Password"), 400);
     if (await bcrypt.compare(currPassword, user.password)) {
         user.password = newPassword;
         await user.save();
@@ -177,7 +177,7 @@ exports.resetPassword = aEH(async (req, res, next) => {
 exports.logOut = (req, res, next) => {
     res.cookie("jwt", "");
     res.status(200).json({
-        messsage: "Logged out",
+        messsage: "Logged Out",
     });
 };
 
@@ -191,9 +191,9 @@ exports.getUser = async (req, res, next) => {
     let user1 = null;
     if (token) {
         try {
-            let jsonPayload = await jwt.verify(token, process.env.SECRETKEY);
-            user1 = await User.findById(jsonPayload.id);
-        } catch (err) { }
+        let jsonPayload = await jwt.verify(token, process.env.SECRETKEY);
+        user1 = await User.findById(jsonPayload.id);
+        } catch (err) {}
     }
     if (user1) {
         user = user1;

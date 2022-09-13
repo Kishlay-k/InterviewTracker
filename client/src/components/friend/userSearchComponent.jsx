@@ -5,9 +5,17 @@ import {connect} from 'react-redux';
 import {removeFriend,addFriend,cancelRequest,handleRequest} from '../../api/index';
 import { fetchUser } from '../../redux/user/userActions';
 import {object} from '../../redux/object/objectSelector';
-import {fetchObject} from '../../redux/object/objectAction'
+import {fetchObject} from '../../redux/object/objectAction';
+import {useHistory} from 'react-router-dom';
 
 function UserSearchComponent({object,user,fetchUser,fetchObject}) {
+
+    const history = useHistory();
+
+    if(user?.username === object?.username && user !== undefined){
+        history.push(`/${user.username}/profile`);
+    }
+
     const [isFriend,setIsFriend] = useState(0);  
 
     useEffect(() => {

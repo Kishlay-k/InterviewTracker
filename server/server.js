@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 const port = 4000;
 
-const server = app.listen(port, () => {
+const server = app.listen(port, () =>{
     console.log("Hello from the server side...");
 });
 

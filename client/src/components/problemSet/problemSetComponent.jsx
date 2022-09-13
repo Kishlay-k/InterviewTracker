@@ -2,46 +2,47 @@
 import React from 'react'
 import Question from '../../components/question/question';
 import Page from '../../components/pagination/pagination';
-import { problemset } from '../../redux/problemset/problemSetSelector';
-import { getUserSelector } from '../../redux/user/userSelector';
-import { connect } from 'react-redux';
+import {problemset} from '../../redux/problemset/problemSetSelector';
+import {getUserSelector} from '../../redux/user/userSelector';
+import {connect} from 'react-redux';
 import TagsComponent from '../tagsComponent/tagsComponent';
 
 import './problemSetComponent.scss'
 
-const ProblemSetComponent = ({ questionPerPage, paginate, page, problemset, user, topic }) => {
+const ProblemSetComponent = ({ questionPerPage, paginate, page, problemset,user,topic}) => {
+    // d-flex justify-content-around flex-wrap
     return (
         <div className="contain">
-            <div className="problemset">
+            <div className = "problemset">
                 <table className="table1">
                     <thead>
                         <tr>
                             <th className="col1">#</th>
                             <th className="col2">Title</th>
-                            {user ? <th className="col31">Solved?</th> : null}
+                            { user ? <th className="col31">Solved?</th> : null } 
                         </tr>
                     </thead>
                     <tbody>
-                        {
-                            problemset?.map(e => {
-                                let checked = user?.solved.find(el => el == e.id);
-                                return <Question key={e.id} question={e} checked={checked} />
-                            })
-                        }
+                    {   
+                        problemset?.map(e => {
+                            let checked = user?.solved.find(el => el == e.id);
+                            return <Question key={ e.id } question={ e } checked = {checked}/>
+                        })
+                    }
                     </tbody>
                 </table>
                 <div className="pagination">
-                    {
-                        questionPerPage ?
-                            <div>
-                                <Page items={450 / questionPerPage} paginate={paginate} page={page} />
-                            </div>
-                            :
-                            null
-                    }
+                {
+                    questionPerPage ? 
+                        <div>
+                            <Page items ={450/questionPerPage} paginate = {paginate} page = {page}/>
+                        </div>
+                    : 
+                        null
+                }
                 </div>
             </div>
-            <TagsComponent />
+            <TagsComponent/>
         </div>
     )
 };

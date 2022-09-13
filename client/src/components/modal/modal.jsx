@@ -1,21 +1,18 @@
 import React from 'react';
-import Modal from 'react-bootstrap/Modal';
-import './modal.scss';
+import Modal from 'react-bootstrap/Modal'
 
 const ModalWrapper = (WrapperComponent) => {
-    const Wrapper = ({ ...props }) => {
+    const Wrapper = ({...props}) => {
         return (
-            <Modal
-                onHide={props.onHide}
-                show={props.show}
-                size="md"
-                aria-labelledby="contained-modal-title-vcenter"
-                centered
-                className="modal-class"
-                animation={false}
-            >
-                <WrapperComponent {...props} />
-            </Modal>
+        <Modal
+            onHide = {props.onHide}
+            show = {props.show}
+            size="lg"
+            aria-labelledby="contained-modal-title-vcenter"
+            centered
+        >
+        <WrapperComponent {...props}/>
+        </Modal>
         );
     }
 

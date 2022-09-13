@@ -3,7 +3,7 @@ const multer = require('multer');
 const router = express.Router();
 const authController = require('../controller/authController');
 
-router.get('/getuser', authController.getUser);
+router.get('/getuser',authController.getUser);
 router.post('/login', authController.logIn);
 router.post('/forgotpassword', authController.forgotPassword);
 router.post('/signup', authController.signUp);

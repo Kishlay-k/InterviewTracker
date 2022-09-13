@@ -1,20 +1,20 @@
-import React, { useState, useEffect } from 'react';
-import { Link, withRouter } from 'react-router-dom';
-import { connect } from 'react-redux';
-import { getUserSelector } from '../../redux/user/userSelector';
-import { toggleSolved } from '../../api/index';
-import { fetchUser } from '../../redux/user/userActions';
+import React, {useState, useEffect} from 'react';
+import {Link,withRouter} from 'react-router-dom';
+import {connect} from 'react-redux';
+import {getUserSelector} from '../../redux/user/userSelector';
+import {toggleSolved} from '../../api/index';
+import {fetchUser} from '../../redux/user/userActions';
 
 function Question({ question, user, checked, fetchUser }) {
+    
+    let ch = checked===undefined ? false : true;
 
-    let ch = checked === undefined ? false : true;
-
-    const toggleState = async (id) => {
+    const toggleState = async(id) =>{
         setState(e => !e);
-        try {
+        try{
             await toggleSolved(id);
             fetchUser();
-        } catch (err) {
+        } catch(err){
             alert(err.message);
         }
     };
@@ -24,39 +24,40 @@ function Question({ question, user, checked, fetchUser }) {
         setState(ch);
     }, [ch]);
 
-
-
+    
+ 
     return (
         <tr>
             <td className="col1">{question.index}</td>
             <td className="col2">
-                <Link to={`/problemset/problem/${question.index}`} className="question-title">
+                <Link to ={`/problemset/problem/${question.index}`} style={{textDecoration: 'none',color:'#d6d6d6'} }>
                     {question.title}
                 </Link>
             </td>
             {
-                user ?
-                    <td
-                        className="col3"
-                        onClick={(e) => toggleState(question.id)}
-                        style={state ? { background: 'rgba(14,173,105,0.39)' } : {}}>
+                 user ?
+                    <td 
+                    className="col3" 
+                    onClick={(e) => toggleState(question.id)} 
+                    style={ state ? {background: 'rgba(14,173,105,0.39)'}: {}}>
                         {
                             state ? 'Yes' : 'No'
                         }
+                      {/* <input className="form-check-input" type="checkbox" value="" id= {`${question.id}`} onChange={(e) => toggleState(question.id)} checked = {state} /> */}
                     </td>
-                    :
-                    null
-            }
+                 :  
+                 null
+            } 
         </tr>
     )
 }
 
-const mapStateToProps = (state) => ({
-    user: getUserSelector(state),
+const mapStateToProps = (state) =>({
+    user : getUserSelector(state),
 });
 
-const mapDispatchToProps = (dispatch) => ({
+const mapDispatchToProps = (dispatch) =>({
     fetchUser: () => dispatch(fetchUser()),
 });
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Question));
+export default withRouter(connect(mapStateToProps,mapDispatchToProps)(Question));

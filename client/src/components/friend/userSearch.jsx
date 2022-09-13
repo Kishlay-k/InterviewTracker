@@ -1,24 +1,24 @@
-import React, { useEffect } from 'react';
+import React,{useEffect} from 'react';
 import WithSpinner from '../../components/withSpinner/withSpinner';
-import { useParams } from 'react-router-dom';
-import { fetchObject } from '../../redux/object/objectAction';
-import { connect } from 'react-redux';
-import { isLoading } from '../../redux/object/objectSelector';
-import ObjectActionComponent from './objectActionsComponent';
+import {useParams} from 'react-router-dom';
+import {fetchObject} from '../../redux/object/objectAction';
+import {connect} from 'react-redux';
+import {isLoading} from '../../redux/object/objectSelector';
+import UserSearchComponent from './userSearchComponent';
 
-const UserWithSpinner = WithSpinner(ObjectActionComponent);
+const UserWithSpinner = WithSpinner(UserSearchComponent);
 
-function UserSearch({ fetchObject, isLoading }) {
+function UserSearch({fetchObject,isLoading}) {
 
-    const { username } = useParams();
+    const {username} = useParams();
 
-    useEffect(() => {
+    useEffect(()=>{
         fetchObject(username);
-    }, [fetchObject, username]);
+    },[fetchObject,username]);
 
     return (
         <div>
-            <UserWithSpinner isLoading={!isLoading} />
+            <UserWithSpinner isLoading={!isLoading}/> 
         </div>
     )
 };

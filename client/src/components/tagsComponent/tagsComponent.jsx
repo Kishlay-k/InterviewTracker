@@ -7,11 +7,11 @@ const allTopics = ['All', 'Array', 'String', 'Searching & Sorting', 'LinkedList'
 export default function TagsComponent() {
     return (
         <div className="tags">
-            <div className="topic">
+            <div className = "topic">
                 Topics:
             </div>
-            {allTopics.map((e, ind) => (
-                <Topic key={ind} data={e} />
+            {allTopics.map((e,ind) => (
+                <Topic key={ind} data={e}/>
             ))}
         </div>
     )
