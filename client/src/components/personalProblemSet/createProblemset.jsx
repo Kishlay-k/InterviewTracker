@@ -1,10 +1,7 @@
 import React from 'react';
 import Form from '../form/formComponent';
-export default function CreateProblemset({handleChange,handleSubmit,name}) {
 
-   
-    
-    
+export default function CreateProblemset({handleChange,handleSubmit,name}) {
     return (
         <div className = "container pt-3 pb-3">
             <form onSubmit={handleSubmit} className = "mt-3">

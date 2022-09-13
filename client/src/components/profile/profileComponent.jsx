@@ -70,7 +70,7 @@ function ProfileComponent({match, user, updatePhoto}) {
                 <div className="row">
                 <form className="col-6" onSubmit = {handlePhotoSubmit} encType = "multipart/form-data">
                     <Form name = "updatephoto" type="file" className="form-control" id="photo" handleChange = {handlePhotoChange} label="Update Profile Photo"/>
-                    <button className = "btn btn-primary" type = "submit" disabled = {file === null}>Update Profile</button>
+                    <button className = "btn btn-primary btn-sm" type = "submit" disabled = {file === null}>Update Profile</button>
                 </form>
 
 
@@ -81,7 +81,7 @@ function ProfileComponent({match, user, updatePhoto}) {
                         :
                             null
                     }
-                    <button className = "btn btn-primary" type = "submit" disabled = {email === '' ? true:false}>Update</button>
+                    <button className = "btn btn-primary btn-sm" type = "submit" disabled = {email === '' ? true:false}>Update</button>
                 </form>
                 </div>
             </div>

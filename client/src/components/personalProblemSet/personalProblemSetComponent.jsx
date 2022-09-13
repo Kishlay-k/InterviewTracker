@@ -35,7 +35,6 @@ function PersonalProblemSetComponent({user,addAList, problemset}) {
         e.preventDefault();
         try{
            const res = await addList(formData);
-           console.log(res);
            addAList(res.data.updatedProblemSet.problemsets);
             setShowModal1((e) => !e);
             setFormData({

@@ -5,7 +5,9 @@ const EmptyComponent = ()=>(
     <p>No Comments yet.</p>
 );
 
-function CommentComponent({comments}) {
+function CommentComponent({comments, user, idx}) {
+    let cmt = [...comments];
+    cmt.reverse();
     return (
         <div className="container mt-5">
             <div className="row d-flex justify-content-center">
@@ -13,10 +15,10 @@ function CommentComponent({comments}) {
                     <div className="headings d-flex justify-content-between align-items-center mb-3">
                         <h5>Comments</h5>
                     </div>
-                    {
-                        comments.length > 0 ? 
-                        comments.map((el,i)=>(
-                            <Comment key = {i} comment = {el} />
+                    {   
+                        cmt.length > 0 ? 
+                        cmt.map((el,i)=>(
+                            <Comment key = {i} comment = {el} user = {user} idx = {idx}/>
                         )) : <EmptyComponent/>
                     }
                 </div>

@@ -32,3 +32,16 @@ exports.comment = aEH(async (req, res, next) => {
         comment
     })
 });
+
+exports.deleteComment = aEH(async (req,res,next)=>{
+    const {user} = req;
+    const {id} = req.params;
+    let comment = await Comment.findById(id);
+    if (user.id !== comment.user.id) {
+        return next(new Err('Forbidden', 403));
+    }
+    await Comment.findByIdAndDelete(id);
+    res.status(200).json({
+        status: 'success',
+    });
+});

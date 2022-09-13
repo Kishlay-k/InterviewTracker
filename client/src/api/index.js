@@ -23,7 +23,11 @@ export const addProblems = (id, data) => API.post(`/user/addproblem/${id}`, {...
 export const addList = (body) => API.post('/user/createproblemset', {...body});
 export const addToFavorite = (body) => API.post('/user/addtofavorite', {...body});
 export const deleteList = (id) => API.delete(`/user/list/${id}`);
-export const deleteListItem = (id, body) => {
-    console.log(body);
-    return API.delete(`user/listitem/${id}`, {data: {...body}});
-}
+export const deleteListItem = (id, body) => API.delete(`/user/listitem/${id}`, {data: {...body}});
+export const postComment = (id, body) => API.post(`/comments/${id}/comment`, {...body});
+export const deleteComment = (id) => API.delete(`/comments/${id}/comment`);
+export const getFriend = (username) => API.get(`/user/${username}`);
+export const removeFriend = (id) => API.post(`/user/removefriend/${id}`);
+export const addFriend = (id) => API.post(`/user/addfriend/${id}`);
+export const cancelRequest = (id) => API.post(`/user/cancelrequest/${id}`);
+export const handleRequest = (id,body) => API.post(`/user/friendrequests/${id}`,{...body});

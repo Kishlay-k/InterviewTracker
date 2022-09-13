@@ -14,9 +14,7 @@ exports.getAllUsers = aEH(async (req, res, next) => {
 });
 
 exports.getUser = aEH(async (req, res, next) => {
-    let query = User.findOne({ username: req.params.username });
-    query = query.populate({ path: 'friendRequests', select: '-solved -friendRequests -problemsets -__v' });
-    query = query.populate({ path: 'friends', select: '-solved -friendRequests -__v' });
+    let user = await User.findOne({ username: req.params.username });
     if(!user) return next(new Err('User does not exist', 400));
     res.status(200).json({
         status: 'success',
@@ -82,7 +80,7 @@ exports.friendRequests = aEH(async (req, res, next) => {
         if(!user2) next(new Err('User does not exist', 400));
         await User.findByIdAndUpdate(req.params.id, { friends: [...user2.friends, req.user.id] });
     }
-    friendReq = friendReq.filter(e => e!=req.params.id);
+    friendReq = friendReq.filter(e => e._id !=req.params.id);
     await User.findByIdAndUpdate(req.user.id, { friends, friendRequests: friendReq });
     res.status(200).json({
         status: 'success',
@@ -93,7 +91,7 @@ exports.addFriend = aEH(async (req, res, next) => {
     const user = await User.findById(req.params.id);
     if(!user) next(new Err('User does not exist', 400));
     let friendReq = user.friendRequests;
-    if(friendReq.find(e => e == req.user.id)) friendReq = friendReq.filter(e => e != req.user.id);
+    if(friendReq.find(e => e._id == req.user.id)) friendReq = friendReq.filter(e => e._id != req.user.id);
     else friendReq.push(req.user.id); 
     await User.findByIdAndUpdate(req.params.id, { friendRequests: friendReq });
     res.status(200).json({
@@ -108,12 +106,13 @@ exports.removeFriend = aEH(async (req, res, next) => {
     let user2 = await User.findById(id2);
     let friends1 = user1.friends;
     let friends2 = user2.friends;
-    friends1 = friends1.filter(e => e!=id2);
-    friends2 = friends2.filter(e => e!=id1);
-    await User.findByIdAndUpdate(id1, { friends: friends1 });    
+    friends1 = friends1.filter(e => e._id!=id2);
+    friends2 = friends2.filter(e => e._id!=id1);
+    const user = await User.findByIdAndUpdate(id1, { friends: friends1 }, {new: true});   
     await User.findByIdAndUpdate(id2, { friends: friends2 });
     res.status(200).json({
-        status: 'success'
+        status: 'success',
+        friends :user.friends
     });
 });
 
@@ -168,6 +167,17 @@ exports.deleteListItem = aEH(async (req, res, next) => {
         problemsets: usr.problemsets
     })
 });
+
+
+exports.cancelFriendRequest = aEH(async (req, res, next) => {
+    const user = await User.findById(req.params.id);
+    let friendRequests = user.friendRequests;
+    friendRequests = friendRequests.filter(e => e._id != req.user.id);
+    await User.findByIdAndUpdate(user._id, {friendRequests});
+    res.status(200).json({
+        status: 'success'
+    })
+}); 
 
 // exports.likeProblemSet = aEH(async (req, res, next) => {
 //     const id = req.params.id;

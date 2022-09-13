@@ -87,7 +87,6 @@ export const addProblem = (data, id) => {
 };
 
 export const addAList = (data) => {
-    console.log(data);
     return {
         type: types.ADD_A_LIST,
         payload: data

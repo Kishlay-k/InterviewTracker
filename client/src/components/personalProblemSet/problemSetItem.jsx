@@ -21,13 +21,12 @@ function ProblemSetItem({el, func, addAList}) {
             alert(err.response.data.message);
         }
     }
-
     return (
         <div>
             <li className="list-group-item d-flex justify-content-between align-items-center" style = {{cursor: 'pointer'}} onClick={(f) => func(el.name)}>
                 {el.name}
                 {
-                    el.name === 'Favorite' ? null : <span onClick={e => handleDeleteItem(el)}>x</span>
+                    el.name === 'Favorite' ? null : <button type="button" className="close" aria-label="Close"><span aria-hidden="true" onClick={e => handleDeleteItem(el)}>x</span></button>
                 }
             </li>
         </div>

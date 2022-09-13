@@ -1,30 +1,30 @@
-import types from './actionType'
-
+import types from './types';
 const INITIAL_STATE = {
-    question:null,
-    isLoading:false,
-    error:undefined
+    object: null,
+    isLoading: false,
+    error : ''
 };
 
-const questionReducer = (state = INITIAL_STATE,action)=>{
-    switch(action.type){
+const objectReducer = (state = INITIAL_STATE,action) =>{
+    switch(action.type)
+    {
         case types.FETCHING_START: return({
             ...state,
-            isLoading:true,
+            isLoading: true,
         });
         case types.FETCH_SUCCESS: return({
             error: undefined,
-            question: action.payload,
+            object: action.payload,
             isLoading: false
         });
         case types.FETCH_FAIL: return({
-            ...state,
             error: action.payload,
             isLoading: false,
-            question: null
+            object: null
         });
         default: return state;
     }
-}
 
-export default questionReducer;
+};
+
+export default objectReducer;

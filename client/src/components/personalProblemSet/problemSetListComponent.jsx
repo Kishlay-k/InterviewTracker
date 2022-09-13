@@ -35,7 +35,6 @@ function ProblemSetListComponent({playlist, addProblem}) {
         e.preventDefault();
         try {
             setModalShow(false);
-            console.log(playlist._id);
             await addProblems(playlist._id, formdata);
             addProblem(formdata, playlist._id);
             setformdata({

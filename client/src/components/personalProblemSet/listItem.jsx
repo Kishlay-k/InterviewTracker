@@ -19,9 +19,9 @@ function ListItem({el, sid, addAList}) {
 
     return (
         <div>
-            <li className="list-group-item d-flex justify-content-between align-items-center pt-1 pb-1">
+            <li className="list-group-item d-flex justify-content-between align-items-center pt-1 pb-1" style = {{cursor: 'pointer'}}>
                 <a href = {el.link} target = "_blank" rel="noreferrer" style = {{textDecoration:'none'}}>{el.title}</a>
-                <span onClick={e => handleDeleteEle(el)}>x</span>
+                <button type="button" className="close" aria-label="Close"><span aria-hidden="true" onClick={e => handleDeleteEle(el)}>x</span></button>
             </li>
         </div>
     )

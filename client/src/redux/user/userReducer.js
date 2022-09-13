@@ -31,7 +31,6 @@ const updateProfilePhoto = (user, data) => {
 };
 
 const addAList = (user,problemsets) =>{
-    console.log(user);
     user.problemsets = problemsets;
     return user;
 }

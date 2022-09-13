@@ -51,14 +51,14 @@ export default function ResetPassword() {
                     <form className = "w-25 m-auto" onSubmit = {handleSubmit} >
                         <Form  name = "newPassword" value = {state.newPassword} type = "password" id = "#password" required = {true} handleChange = {handleChange} label = "New Password" />
                         <Form  name = "confirmNP" value = {state.confirmNP} type = "password" id = "#confirmPassword" required = {true} handleChange = {handleChange} label = "Confirm Password" />
-                        <button className = "btn btn-primary" type = "submit">Submit</button> 
+                        <button className = "btn btn-primary btn-sm" type = "submit">Submit</button> 
                     </form>
                 :
                     <form className = "w-25 m-auto" onSubmit = {handleSubmit1} >
                         <Form  name = "currPassword" value = {state.currPassword} type = "password" id = "#currPassword" required = {true} handleChange = {handleChange} label = "Current Password" />
                         <Form  name = "newPassword" value = {state.newPassword} type = "password" id = "#password" required = {true} handleChange = {handleChange} label = "New Password" />
                         <Form  name = "confirmNP" value = {state.confirmNP} type = "password" id = "#confirmPassword" required = {true} handleChange = {handleChange} label = "Confirm Password" />
-                        <button className = "btn btn-primary" type = "submit">Submit</button> 
+                        <button className = "btn btn-primary btn-sm" type = "submit">Submit</button> 
                     </form>
             }
 
